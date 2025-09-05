@@ -56,6 +56,6 @@ public class RecipeBuilder
 
     public Recipe Build()
     {
-        return new Recipe(this.Id, this.Id, this.Type, this._inputs, this._outputs, this._requirements, this._duration);
+        return new Recipe(this.Id, this._name, this.Type, this._inputs, this._outputs, this._requirements, this._duration);
     }
 }

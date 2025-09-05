@@ -22,7 +22,7 @@ public static class Recipes
         if (string.IsNullOrEmpty(id))
             throw new ArgumentException("Recipe ID cannot be null or empty.");
 
-        if (Recipes._entries.TryGetValue(id, out Recipe recipe))
+        if (Recipes._entries.TryGetValue(id, out Recipe? recipe))
             return recipe;
 
         throw new KeyNotFoundException($"No recipe found with ID '{id}'.");

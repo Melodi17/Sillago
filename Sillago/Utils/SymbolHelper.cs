@@ -70,4 +70,44 @@ public class SymbolHelper
         // Append 'n' to indicate polymerization
         return $"({symbol})n";
     }
+    
+    /// <summary>
+    /// Converts given symbol to a format with ascii super and sub scripts.
+    /// Example: "H2O" becomes "H₂O", "C6H12O6" becomes "C₆H₁₂O₆"
+    /// </summary>
+    public static string FormatSymbol(string symbol)
+    {
+        if (string.IsNullOrEmpty(symbol))
+            throw new ArgumentException("Symbol cannot be null or empty.", nameof(symbol));
+
+        Dictionary<char, char> superScriptMap = new()
+        {
+            { 'n', 'ⁿ' }
+        };
+
+        Dictionary<char, char> subScriptMap = new()
+        {
+            { '0', '₀' }, { '1', '₁' }, { '2', '₂' }, { '3', '₃' },
+            { '4', '₄' }, { '5', '₅' }, { '6', '₆' }, { '7', '₇' },
+            { '8', '₈' }, { '9', '₉' },
+        };
+        
+        
+        StringBuilder converted = new();
+        char previousChar = '\0';
+        foreach (char c in symbol)
+        {
+            // If the character is 'n' and the previous character is ')', convert to superscript
+            if (superScriptMap.ContainsKey(c) && previousChar == ')')
+                converted.Append(superScriptMap[c]);
+            else if (subScriptMap.ContainsKey(c))
+                converted.Append(subScriptMap[c]);
+            else
+                converted.Append(c);
+            
+            previousChar = c;
+        }
+        
+        return converted.ToString();
+    }
 }

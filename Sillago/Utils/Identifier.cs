@@ -7,19 +7,24 @@ public static class Identifier
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be null or whitespace.", nameof(name));
 
-        bool FilterOutUnsupportedCharacters(char c) => char.IsLetterOrDigit(c) || c == '_' || c == ' ';
-        char ConvertSpacesToUnderscores(char c) => c                                == ' ' ? '_' : c;
-        
-        string id = new string(name
-            .Trim()
-            .ToLowerInvariant()
-            .Where(FilterOutUnsupportedCharacters)
-            .Select(ConvertSpacesToUnderscores)
-            .ToArray());
-        
+        bool FilterOutUnsupportedCharacters(char c)
+            => char.IsLetterOrDigit(c) || c == '_' || c == ' ';
+
+        char ConvertSpacesToUnderscores(char c) => c == ' ' ? '_' : c;
+
+        string id = new string(
+            name
+                .Trim()
+                .ToLowerInvariant()
+                .Replace("-", "_")
+                .Where(FilterOutUnsupportedCharacters)
+                .Select(ConvertSpacesToUnderscores)
+                .ToArray());
+
         if (string.IsNullOrWhiteSpace(id))
-            throw new ArgumentException("Name must contain at least one valid identifier character.", nameof(name));
-        
+            throw new ArgumentException(
+                "Name must contain at least one valid identifier character.", nameof(name));
+
         return id;
     }
 }

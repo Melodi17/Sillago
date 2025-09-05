@@ -32,6 +32,13 @@ public class IdentifierTests
         string result = Identifier.Create("Hello@World!");
         Assert.That(result, Is.EqualTo("helloworld"));
     }
+    
+    [Test]
+    public void Identifier_ConvertsDashesToUnderscores()
+    {
+        string result = Identifier.Create("Hello-World");
+        Assert.That(result, Is.EqualTo("hello_world"));
+    }
 
     [Test]
     public void Identifier_OnlyUnsupportedCharacters_Throws()

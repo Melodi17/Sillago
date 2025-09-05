@@ -59,7 +59,7 @@ public abstract class Material : ISymbolizable
     {
         StringBuilder sb = new();
 
-        sb.AppendLine($"{this.Symbol}");
+        // sb.AppendLine($"{this.Symbol}");
         sb.AppendLine($"Density: {this.Density} kg/m³");
 
         return sb;

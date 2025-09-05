@@ -78,4 +78,39 @@ public class SymbolHelperTests
         string result = SymbolHelper.GetSymbol(components);
         Assert.That(result, Is.EqualTo("(C6H12O6)(H2O)2"));
     }
+
+    [Test]
+    public void ConvertSymbol_ShouldReturn_ForCompound()
+    {
+        string symbol = "C6H12O6";
+        string result = SymbolHelper.FormatSymbol(symbol);
+        
+        Assert.That(result, Is.EqualTo("C₆H₁₂O₆"));
+    }
+
+
+    [Test]
+    public void ConvertSymbol_ShouldReturn_ForPolymerCompound()
+    {
+        string symbol = "(C2H4)n";
+        string result = SymbolHelper.FormatSymbol(symbol);
+        
+        Assert.That(result, Is.EqualTo("(C₂H₄)ⁿ"));
+    }
+    
+    [Test]
+    public void ConvertSymbol_ShouldReturn_ForNonPolymerNContainingCompound()
+    {
+        string symbol = "(Mn2H4)n";
+        string result = SymbolHelper.FormatSymbol(symbol);
+        
+        Assert.That(result, Is.EqualTo("(Mn₂H₄)ⁿ"));
+    }
+
+
+    [Test]
+    public void ConvertSymbol_ShouldFail_ForInvalidInput()
+    {
+        Assert.Throws<ArgumentException>(() => SymbolHelper.FormatSymbol(string.Empty));
+    }
 }

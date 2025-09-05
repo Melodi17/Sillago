@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sillago", "Sillago\Sillago.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sillago.Tests", "Sillago.Tests\Sillago.Tests.csproj", "{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleInterface", "ConsoleInterface\ConsoleInterface.csproj", "{0FA5061F-6514-411E-8D62-58CC009E7433}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FA5061F-6514-411E-8D62-58CC009E7433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FA5061F-6514-411E-8D62-58CC009E7433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FA5061F-6514-411E-8D62-58CC009E7433}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FA5061F-6514-411E-8D62-58CC009E7433}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
