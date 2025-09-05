@@ -1,0 +1,29 @@
+namespace Sillago.Materials;
+
+public class ValueComponent<T>
+{
+    public int Amount;
+    public T   Value;
+
+    public ValueComponent(T value, int amount = 1)
+    {
+        this.Value  = value;
+        this.Amount = amount;
+    }
+}
+
+public class CompoundComponent : ValueComponent<Element>
+{
+    public CompoundComponent(Element value, int amount = 1) : base(value, amount)
+    {
+        
+    }
+}
+
+public class AlloyComponent : ValueComponent<Material>
+{
+    public AlloyComponent(Material value, int amount = 1) : base(value, amount)
+    {
+        
+    }
+}

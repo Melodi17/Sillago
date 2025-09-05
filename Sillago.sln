@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sillago", "Sillago\Sillago.csproj", "{DC901497-5203-48A9-8EC6-9E65CE16329A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sillago.Tests", "Sillago.Tests\Sillago.Tests.csproj", "{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC901497-5203-48A9-8EC6-9E65CE16329A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC901497-5203-48A9-8EC6-9E65CE16329A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC901497-5203-48A9-8EC6-9E65CE16329A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC901497-5203-48A9-8EC6-9E65CE16329A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB752A7F-50E7-4A69-992D-46B4C9DF43E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,50 @@
+namespace Sillago.Recipes;
+
+using System.Text;
+using Items;
+
+public class Recipe
+{
+    public string Id { get; }
+    public string Name { get; }
+    public RecipeType Type { get; }
+    
+    public IReadOnlyList<ItemStack> Inputs { get; }
+    public IReadOnlyList<ItemStack> Outputs { get; }
+    
+    public IReadOnlyList<IRecipeRequirement> Requirements { get; }
+    public TimeSpan Duration { get; }
+
+    public Recipe(string id, string name, RecipeType type,
+        IReadOnlyList<ItemStack> inputs,
+        IReadOnlyList<ItemStack> outputs,
+        IReadOnlyList<IRecipeRequirement>? requirements = null,
+        TimeSpan duration = default)
+    {
+        this.Id = id;
+        this.Name = name;
+        this.Type = type;
+        this.Inputs = inputs;
+        this.Outputs = outputs;
+        this.Requirements = requirements ?? [];
+        this.Duration = duration;
+    }
+
+    public string GetInfo()
+    {
+        StringBuilder sb = new();
+        
+        sb.AppendLine($"ID: {this.Id}");
+        sb.AppendLine($"Duration: {this.Duration:0.00}s");
+        
+        sb.AppendLine($"Inputs:");
+        foreach (ItemStack input in this.Inputs)
+            sb.AppendLine($"  - {input}");
+        
+        sb.AppendLine($"Outputs:");
+        foreach (ItemStack output in this.Outputs)
+            sb.AppendLine($"  - {output}");
+
+        return sb.ToString();
+    }
+}
