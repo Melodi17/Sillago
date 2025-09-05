@@ -17,7 +17,7 @@ public class ItemMaterial : Item
         this.Type     = type;
 
         this.Name        = material.FormNames[type];
-        this.Id          = this.Identifier($"{material.Name}_{type}");
+        this.Id          = Utils.Identifier.Create($"{material.Name}_{type}");
         this.Description = material.GetDescription().ToString();
     }
 

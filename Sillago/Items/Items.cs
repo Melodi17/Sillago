@@ -33,7 +33,7 @@ public static class Items
 
     public static ItemMaterial GetMaterial(Material material, MaterialType type)
     {
-        string itemId = Extensions.Identifier($"{material.Name}_{type}");
+        string itemId = Identifier.Create($"{material.Name}_{type}");
         if (Items._entries.TryGetValue(itemId, out Item? item) && item is ItemMaterial itemMaterial)
             return itemMaterial;
 
@@ -42,7 +42,7 @@ public static class Items
     
     public static ItemMaterial? TryGetMaterial(Material material, MaterialType type)
     {
-        string itemId = Extensions.Identifier($"{material.Name}_{type}");
+        string itemId = Identifier.Create($"{material.Name}_{type}");
         if (Items._entries.TryGetValue(itemId, out Item? item) && item is ItemMaterial itemMaterial)
             return itemMaterial;
 
