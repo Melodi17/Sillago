@@ -5,7 +5,7 @@ public interface ICapability;
 /// <summary>
 /// Indicates that the Machine supports temperature control.
 /// </summary>
-public class TemperatureCapability : ICapability
+public interface TemperatureCapability : ICapability
 {
-    public float Temperature { set; get; }
+    public float Temperature { get; }
 }

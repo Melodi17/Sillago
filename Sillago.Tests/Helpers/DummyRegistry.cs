@@ -1,12 +1,12 @@
-namespace Sillago.Tests;
+namespace Sillago.Tests.Helpers;
 
 public class DummyRegistry
 {
-    public static readonly DummyRegistryObject ObjA = new DummyRegistryObject("A");
-    public static readonly DummyRegistryObject ObjB = new DummyRegistryObject("B");
-    public static readonly DummyRegistryObject ObjC = new DummyRegistryObject("C");
+    public static readonly DummyRegistryObject ObjA = new();
+    public static readonly DummyRegistryObject ObjB = new();
+    public static readonly DummyRegistryObject ObjC = new();
     
-    public static readonly DummyRegistryObjectChild ObjD = new DummyRegistryObjectChild("D", "ExtraD");
-    public static readonly DummyRegistryObjectChild ObjE = new DummyRegistryObjectChild("E", "ExtraE");
-    public static readonly DummyRegistryObjectChild ObjF = new DummyRegistryObjectChild("F", "ExtraF");
+    public static readonly DummyRegistryObjectChild ObjD = new();
+    public static readonly DummyRegistryObjectChild ObjE = new();
+    public static readonly DummyRegistryObjectChild ObjF = new();
 }

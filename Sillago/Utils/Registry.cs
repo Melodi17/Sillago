@@ -15,24 +15,17 @@ public class Registry
                 // yield return the value of the field
                 yield return (T) field.GetValue(null);
             }
-            else if (typeof(IEnumerable<T>).IsAssignableFrom(field.FieldType))
-            {
-                // if the field is a collection, yield each item in the collection
-                foreach (T item in (IEnumerable<T>) field.GetValue(null))
-                    yield return item;
-            }
-            else if (field.FieldType.IsArray && field.FieldType.GetElementType() == typeof(T))
-                yield return (T) field.GetValue(null);
         }
     }
 
-    public static T GetEntry<T, TClass>(string name)
+    public static T? GetEntry<T, TClass>(string name, bool ignoreCase = false)
     {
         // get all static fields of type T in TClass
         FieldInfo[] fields = typeof(TClass).GetFields(BindingFlags.Public | BindingFlags.Static);
         foreach (FieldInfo field in fields)
         {
-            if (field.FieldType == typeof(T) && field.Name == name)
+            if (field.FieldType == typeof(T) 
+                && field.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
                 return (T) field.GetValue(null);
         }
         return default;

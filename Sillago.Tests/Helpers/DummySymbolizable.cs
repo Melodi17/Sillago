@@ -1,6 +1,6 @@
-namespace Sillago.Tests;
+namespace Sillago.Tests.Helpers;
 
-using Utils;
+using Sillago.Utils;
 
 public class DummySymbolizable : ISymbolizable
 {

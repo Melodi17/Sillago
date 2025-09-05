@@ -16,6 +16,6 @@ public class ItemStack
         if (this.Item.CountAsVolume)
             return $"{this.Item.Name} {this.Amount}mL";
         else
-            return $"{this.Item.Name} x{this.Amount}";
+            return $"{this.Amount} x {this.Item.Name}";
     }
 }
