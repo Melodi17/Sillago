@@ -1,5 +1,7 @@
 namespace Sillago.Recipes;
 
+using Items;
+
 public static class Recipes
 {
     private static readonly Dictionary<string, Recipe> _entries = new();
@@ -30,5 +32,15 @@ public static class Recipes
     public static IEnumerable<Recipe> OfType(RecipeType type)
     {
         return Recipes.Entries.Where(x => x.Type == type);
+    }
+    
+    public static IEnumerable<Recipe> Producing(Item item)
+    {
+        return Recipes.Entries.Where(r => r.Outputs.Any(o => o.Item == item));
+    }
+    
+    public static IEnumerable<Recipe> Consuming(Item item)
+    {
+        return Recipes.Entries.Where(r => r.Inputs.Any(i => i.Item == item));
     }
 }

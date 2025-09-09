@@ -9,7 +9,7 @@ public class FluidMaterial : Material
     public float FreezingPoint;
     public float VaporisationPoint;
 
-    public FluidMaterial(string name, int color, VisualSet visualSet, Element element, MaterialFlags flags, float density, float freezingPoint = 0f, float vaporisationPoint = 0f)
+    public FluidMaterial(string name, int color, VisualSet visualSet, Element element, MaterialFlags flags, float density, float freezingPoint, float vaporisationPoint)
         : this(name)
     {
         this.Name      = name;
@@ -35,10 +35,14 @@ public class FluidMaterial : Material
 
         ItemMaterial ice = new ItemMaterial(this, MaterialType.Ice);
         yield return ice;
-        // liquid.FreezesInto(ice, this.FreezingPoint);
 
         ItemMaterial gas = new ItemMaterial(this, MaterialType.Gas);
         yield return gas;
-        // liquid.VaporisesInto(gas, this.VaporisationPoint);
+        
+        liquid.FreezesInto(ice, this.FreezingPoint);
+        ice.ThawsInto(liquid, this.FreezingPoint);
+        
+        liquid.VaporisesInto(gas, this.VaporisationPoint);
+        gas.CondensesInto(liquid, this.VaporisationPoint);
     }
 }

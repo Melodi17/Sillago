@@ -19,7 +19,7 @@ public class CrystallineMaterial : PowderMaterial
         yield return crystal;
 
         yield return this.Deferred(() =>
-            crystal.PressesInto(Items.GetMaterial(this, MaterialType.Powder)));
+            crystal.MaceratesInto([Items.GetMaterial(this, MaterialType.Powder).Stack(4)]));
 
         if (this.Is(MaterialFlags.Ore))
             yield return new ItemMaterial(this, MaterialType.Ore);

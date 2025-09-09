@@ -6,21 +6,27 @@ using Items;
 
 public class BioMaterial : Material
 {
-    public Material FeedsOn; // The material this bio material feeds on
-    public float    MinTemp;
-    public float    MaxTemp;
+    public Material? FeedsOn; // The material this bio material feeds on
+    public float MinTemp;
+    public float MaxTemp;
 
-    public BioMaterial(string name, int variation, MaterialFlags flags, float minTemp, float maxTemp, Material feedsOn)
+    public BioMaterial(
+        string name,
+        int variation,
+        MaterialFlags flags,
+        float minTemp,
+        float maxTemp,
+        Material feedsOn)
         : base(name)
     {
         this.Name = name;
         Compound culture = BioMaterial.CreateMicrobialCulture(variation);
-        this.Symbol    = culture.Symbol;
-        this.Color     = BioMaterial.CreateColor(variation);
+        this.Symbol = culture.Symbol;
+        this.Color = BioMaterial.CreateColor(variation);
         this.VisualSet = VisualSet.Default;
-        this.Flags     = flags;
+        this.Flags = flags;
 
-        this.Density  = 1000f; // Arbitrary density for microbial culture
+        this.Density = 1000f; // Arbitrary density for microbial culture
         this.FeedsOn = feedsOn;
 
         this.MinTemp = minTemp;
@@ -41,7 +47,8 @@ public class BioMaterial : Material
         int o = 1000 + deltaO; // base value of 1000
         int n = 300  + deltaN; // base value of 300
 
-        return new Compound("MicrobialCulture",
+        return new Compound(
+            "MicrobialCulture",
             Element.C * c, Element.H * h, Element.O * o, Element.N * n);
     }
 
@@ -55,6 +62,8 @@ public class BioMaterial : Material
         ItemMaterial culture = new ItemMaterial(this, MaterialType.Culture);
         yield return culture;
 
-        // yield return () => culture.Incubates(this.MinTemp, this.MaxTemp, this._feedsOn);
+        if (this.FeedsOn != null)
+            yield return this.Deferred(() =>
+                culture.Incubates(this.MinTemp, this.MaxTemp, this.FeedsOn));
     }
 }

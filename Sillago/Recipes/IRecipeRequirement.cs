@@ -25,11 +25,11 @@ public class TemperatureRequirement : IRecipeRequirement
     public string GetInfo()
     {
         if (this.AtLeast != null && this.AtMax != null)
-            return $"Temperature between {this.AtLeast}°C and {this.AtMax}°C";
+            return $"Temperature between {this.AtLeast:0.##}°C and {this.AtMax:0.##}°C";
         if (this.AtLeast != null)
-            return $"Temperature at least {this.AtLeast}°C";
+            return $"Temperature at least {this.AtLeast:0.##}°C";
         if (this.AtMax != null)
-            return $"Temperature less than or equal to {this.AtMax}°C";
+            return $"Temperature less than or equal to {this.AtMax:0.##}°C";
         
         throw new UnreachableException("Invalid state: both AtLeast and AtMax are null.");
     }

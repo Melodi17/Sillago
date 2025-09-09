@@ -41,6 +41,11 @@ public class RecipeBuilder
         this._outputs.Add(item.Stack(quantity));
         return this;
     }
+    public RecipeBuilder AddOutputs(List<ItemStack> outputs)
+    {
+        this._outputs.AddRange(outputs);
+        return this;
+    }
 
     public RecipeBuilder AddRequirement(IRecipeRequirement requirement)
     {

@@ -22,7 +22,6 @@ public class IngotMaterial : Material
 
     protected IngotMaterial(string name) : base(name)
     {
-        this.OverrideFormName(MaterialType.Liquid, $"Molten {name}");
     }
 
     public override IEnumerator Generate()
@@ -38,8 +37,10 @@ public class IngotMaterial : Material
         powder.SmeltsInto(ingot, this.MeltingPoint / 3f);
         ingot.LathesInto(rod);
         
-        ItemMaterial molten = new ItemMaterial(this, MaterialType.Liquid);
+        ItemMaterial molten = new(this, MaterialType.Liquid);
         yield return molten;
+        
+        ingot.ArcSmeltsInto(molten, this.MeltingPoint * 1.5f);
 
         if (!this.Is(MaterialFlags.Brittle))
         {

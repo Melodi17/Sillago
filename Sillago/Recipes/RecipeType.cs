@@ -8,4 +8,12 @@ public enum RecipeType
     Pressing,
     Lathing,
     Cutting,
+    ArcSmelting,
+    Thawing,
+    Freezing,
+    Condensing,
+    Vaporising,
+    Incubating,
+    Macerating,
+    Distilling
 }
