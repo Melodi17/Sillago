@@ -5,7 +5,7 @@ namespace Sillago.Materials;
 
 using Utils;
 
-public abstract class Material : ISymbolizable
+public abstract class Material
 {
     public int Color;     // ARGB format, e.g. 0xFF0000FF for blue
     public float Density; // kg/m^3
@@ -14,7 +14,7 @@ public abstract class Material : ISymbolizable
     // public FluidHoldingProperties FluidHoldingProperties;
 
     public string Name;
-    public string Symbol { get; set; }
+    public Symbol Symbol { get; set; }
     public MaterialFlags Flags { get; set; }
     public VisualSet VisualSet { get; set; }
     public Dictionary<MaterialType, string> FormNames;

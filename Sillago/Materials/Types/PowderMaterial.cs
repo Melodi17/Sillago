@@ -3,11 +3,12 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Utils;
 
 public class PowderMaterial : Material
 {
     public float? LiquificationPoint;
-    public PowderMaterial(string name, int color, VisualSet visualSet, Element element, MaterialFlags flags, float density, float? liquificationPoint = null)
+    public PowderMaterial(string name, int color, VisualSet visualSet, Symbol symbol, MaterialFlags flags, float density, float? liquificationPoint = null)
         : this(name)
     {
         this.Name               = name;
@@ -15,7 +16,7 @@ public class PowderMaterial : Material
         this.VisualSet          = visualSet;
         this.Flags              = flags;
         this.Density            = density;
-        this.Symbol             = element.Symbol;
+        this.Symbol             = symbol;
         this.LiquificationPoint = liquificationPoint;
     }
 

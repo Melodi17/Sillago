@@ -21,7 +21,7 @@ public class BioMaterial : Material
     {
         this.Name = name;
         Compound culture = BioMaterial.CreateMicrobialCulture(variation);
-        this.Symbol = culture.Symbol;
+        this.Symbol = culture;
         this.Color = BioMaterial.CreateColor(variation);
         this.VisualSet = VisualSet.Default;
         this.Flags = flags;

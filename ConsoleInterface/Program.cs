@@ -182,7 +182,8 @@ class Program
 
         if (item is ItemMaterial im)
         {
-            string symbol = SymbolHelper.FormatSymbol(im.Material.Symbol);
+            SymbolFormatter formatter = new AsciiSymbolFormatter();
+            string symbol = formatter.Format(im.Material.Symbol);
             descriptionText = $"[bold]{symbol}[/]\n" + descriptionText;
         }
 

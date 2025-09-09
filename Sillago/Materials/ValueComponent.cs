@@ -1,5 +1,7 @@
 namespace Sillago.Materials;
 
+using Utils;
+
 public class ValueComponent<T>
 {
     public int Amount;
@@ -12,9 +14,9 @@ public class ValueComponent<T>
     }
 }
 
-public class CompoundComponent : ValueComponent<Element>
+public class CompoundComponent : ValueComponent<Symbol>
 {
-    public CompoundComponent(Element value, int amount = 1) : base(value, amount)
+    public CompoundComponent(Symbol value, int amount = 1) : base(value, amount)
     {
         
     }

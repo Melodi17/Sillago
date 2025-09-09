@@ -1,6 +1,6 @@
-namespace Sillago.Items;
+namespace Sillago.Recipes;
 
-using Recipes;
+using Items;
 
 public class RecipeBuilder
 {

@@ -2,18 +2,13 @@ namespace Sillago.Materials;
 
 using Utils;
 
-public class Compound : Element
+public class Compound : Symbol
 {
-    private readonly CompoundComponent[] _components;
+    public string Name { get; }
+    public readonly CompoundComponent[] Components;
     public Compound(string name, params CompoundComponent[] components)
-        : base(name, SymbolHelper.GetSymbol(components), components[0].Value.AtomicNumber)
     {
-        this._components = components;
-    }
-
-    public Compound Polymer()
-    {
-        this.Symbol = SymbolHelper.Polymerize(this.Symbol);
-        return this;
+        this.Name = name;
+        this.Components = components;
     }
 }

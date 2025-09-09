@@ -3,19 +3,20 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Utils;
 
 public class IngotMaterial : Material
 {
     public float MeltingPoint;
 
-    public IngotMaterial(string name, int color, VisualSet visualSet, Element element, MaterialFlags flags, float density, float meltingPoint) : this(name)
+    public IngotMaterial(string name, int color, VisualSet visualSet, Symbol symbol, MaterialFlags flags, float density, float meltingPoint) : this(name)
     {
         this.Name      = name;
         this.Color     = color;
         this.VisualSet = visualSet;
         this.Flags     = flags;
         this.Density   = density;
-        this.Symbol    = element.Symbol;
+        this.Symbol    = symbol;
 
         this.MeltingPoint = meltingPoint;
     }

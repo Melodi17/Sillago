@@ -14,11 +14,11 @@ public class Alloy : IngotMaterial
     {
         this.Components = components;
         this.Name = name;
-        this.Symbol = SymbolHelper.GetSymbol(components);
+        this.Symbol = new Compound(name, components.Select(x => new CompoundComponent(x.Value.Symbol, x.Amount)).ToArray());
 
         // split int color into ARGB components, then perform weighted sum
         this.Color = components.WeightedColorwiseSum(x => x.Amount, x => x.Value.Color);
-        this.VisualSet = components.MaxBy(x => x.Amount).Value.VisualSet;
+        this.VisualSet = components.MaxBy(x => x.Amount)!.Value.VisualSet;
 
         this.Flags = Alloy.CalculateFlags(components);
 

@@ -6,8 +6,8 @@ using Items;
 
 public class CrystallineMaterial : PowderMaterial
 {
-    public CrystallineMaterial(string name, int color, VisualSet visualSet, Element element, MaterialFlags flags, float density, float? liquificationPoint = null)
-        : base(name, color, visualSet, element, flags, density, liquificationPoint) { }
+    public CrystallineMaterial(string name, int color, VisualSet visualSet, Element symbol, MaterialFlags flags, float density, float? liquificationPoint = null)
+        : base(name, color, visualSet, symbol, flags, density, liquificationPoint) { }
 
     protected CrystallineMaterial(string name) : base(name) { }
 

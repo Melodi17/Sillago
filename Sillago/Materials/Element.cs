@@ -2,7 +2,7 @@ namespace Sillago.Materials;
 
 using Utils;
 
-public class Element : ISymbolizable
+public class Element : Symbol
 {
     public static readonly Element H = new("Hydrogen", "H", 1);
     public static readonly Element He = new("Helium", "He", 2);

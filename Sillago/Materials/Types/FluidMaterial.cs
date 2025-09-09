@@ -3,13 +3,14 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Utils;
 
 public class FluidMaterial : Material
 {
     public float FreezingPoint;
     public float VaporisationPoint;
 
-    public FluidMaterial(string name, int color, VisualSet visualSet, Element element, MaterialFlags flags, float density, float freezingPoint, float vaporisationPoint)
+    public FluidMaterial(string name, int color, VisualSet visualSet, Symbol symbol, MaterialFlags flags, float density, float freezingPoint, float vaporisationPoint)
         : this(name)
     {
         this.Name      = name;
@@ -17,7 +18,7 @@ public class FluidMaterial : Material
         this.VisualSet = visualSet;
         this.Flags     = flags;
         this.Density   = density;
-        this.Symbol    = element.Symbol;
+        this.Symbol    = symbol;
 
         this.FreezingPoint     = freezingPoint;
         this.VaporisationPoint = vaporisationPoint;

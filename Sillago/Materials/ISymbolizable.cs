@@ -1,6 +1,3 @@
-namespace Sillago.Utils;
+namespace Sillago.Materials;
 
-public interface ISymbolizable
-{
-    string Symbol { get; }
-}
+public class Symbol;
