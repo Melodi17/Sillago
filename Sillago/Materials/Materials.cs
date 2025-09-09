@@ -268,6 +268,8 @@ public class Materials
         Materials.Gold   * 3,
         Materials.Silver * 2,
         Materials.Copper * 1);
+    
+    
 
     internal static void GenerateLinkingRecipes()
     {

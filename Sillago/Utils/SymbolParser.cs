@@ -62,7 +62,7 @@ public class SymbolParser
         if (components.Count == 0)
             throw new ArgumentException("No valid components found in compound symbol.");
 
-        return new Compound("n/a", components.ToArray());
+        return new Compound(components.ToArray());
     }
     
     private static int ParseNumber(string input, ref int index)

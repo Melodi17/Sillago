@@ -3,11 +3,11 @@ namespace SillagoGenerator;
 using System.Collections;
 using System.Text;
 
-public class Page : IEnumerable<Dictionary<string, string>>
+public class Page : IEnumerable<Row>
 {
     public readonly string Name;
     private readonly string _url;
-    private readonly List<Dictionary<string, string>> _rows = new();
+    private readonly List<Row> _rows = new();
 
     public Page(string name, string url)
     {
@@ -16,7 +16,7 @@ public class Page : IEnumerable<Dictionary<string, string>>
         this.Load();
     }
 
-    public Dictionary<string, string> this[int index]
+    public Row this[int index]
     {
         get
         {
@@ -26,7 +26,7 @@ public class Page : IEnumerable<Dictionary<string, string>>
         }
     }
     
-    public IEnumerator<Dictionary<string, string>> GetEnumerator() => this._rows.GetEnumerator();
+    public IEnumerator<Row> GetEnumerator() => this._rows.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     
     private void Load()
@@ -54,7 +54,7 @@ public class Page : IEnumerable<Dictionary<string, string>>
                 row[header] = value;
             }
 
-            this._rows.Add(row);
+            this._rows.Add(new Row(row));
         }
     }
 
@@ -92,4 +92,27 @@ public class Page : IEnumerable<Dictionary<string, string>>
 
         yield return valueBuilder.ToString();
     }
+}
+
+public class Row
+{
+    private readonly Dictionary<string, string> _data;
+
+    public Row(Dictionary<string, string> data)
+    {
+        this._data = data;
+    }
+
+    public string this[string columnName]
+    {
+        get
+        {
+            if (this._data.TryGetValue(columnName, out string? value))
+                return value;
+            throw new KeyNotFoundException($"Column '{columnName}' not found in row.");
+        }
+    }
+    
+    public IEnumerable<string> Columns => this._data.Keys;
+    public IEnumerable<string> Values => this._data.Values;
 }
