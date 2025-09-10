@@ -469,6 +469,36 @@ public partial class Materials
         freezingPoint: 10f,
         vaporisationPoint: 337f);
     
+    public static Material Ammonia = new FluidMaterial(
+        "Ammonia",
+        0x99CCFF,
+        VisualSet.Default,
+        new Compound(Element.N * 1, Element.H * 3),
+        MaterialFlags.Toxic | MaterialFlags.Corrosive | MaterialFlags.Flammable,
+        density: 681f,
+        freezingPoint: -77.7f,
+        vaporisationPoint: -33.3f);
+    
+    public static Material Methanol = new FluidMaterial(
+        "Methanol",
+        0x66CC99,
+        VisualSet.Shiny,
+        new Compound(Element.C * 1, Element.H * 3, Element.O * 1, Element.H * 1),
+        MaterialFlags.Flammable | MaterialFlags.Toxic,
+        density: 792f,
+        freezingPoint: -97.6f,
+        vaporisationPoint: 64.7f);
+    
+    public static Material Syngas = new FluidMaterial(
+        "Syngas",
+        0xAAAAAA,
+        VisualSet.Default,
+        new Compound(Element.C * 1, Element.O * 1, Element.H * 2),
+        MaterialFlags.Flammable | MaterialFlags.Toxic,
+        density: 900f,
+        freezingPoint: -200f,
+        vaporisationPoint: -100f);
+    
     public static Material Lactobacillus = new BioMaterial(
          "Lactobacillus",
          1,
