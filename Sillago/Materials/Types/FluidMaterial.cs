@@ -11,7 +11,7 @@ public class FluidMaterial : Material
     public float VaporisationPoint;
 
     public FluidMaterial(string name, int color, VisualSet visualSet, Symbol symbol, MaterialFlags flags, float density, float freezingPoint, float vaporisationPoint)
-        : this(name)
+        : this(name, freezingPoint, vaporisationPoint)
     {
         this.Name      = name;
         this.Color     = color;
@@ -24,9 +24,15 @@ public class FluidMaterial : Material
         this.VaporisationPoint = vaporisationPoint;
     }
     
-    protected FluidMaterial(string name) : base(name)
+    protected FluidMaterial(string name, float freezingPoint = 0f, float vaporisationPoint = 100f)
+        : base(name)
     {
-        this.OverrideFormName(MaterialType.Liquid, $"{name}");
+        if (IsAboveRoomTemperature(vaporisationPoint))
+            // Liquids that boil above room temperature are usually called liquids
+            this.OverrideFormName(MaterialType.Liquid, $"{name}");
+        else
+            // Fluids that boil below room temperature are usually called gases
+            this.OverrideFormName(MaterialType.Gas, $"{name}");
     }
     
     public override IEnumerator Generate()
@@ -46,4 +52,7 @@ public class FluidMaterial : Material
         liquid.VaporisesInto(gas, this.VaporisationPoint);
         gas.CondensesInto(liquid, this.VaporisationPoint);
     }
+    
+    private static bool IsAboveRoomTemperature(float temperature)
+        => temperature > 20f;
 }

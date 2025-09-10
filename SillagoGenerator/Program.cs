@@ -41,7 +41,25 @@ class Program
         ForeachRow(bioMaterialsPage, GenerateBioMaterial);
         ForeachRow(alloysPage, GenerateAlloy);
 
-        File.WriteAllText("output.txt", sb.ToString());
+        File.WriteAllText("Sillago/Materials/Materials.Generated.cs", GenerateClass("Materials", sb.ToString()));
+    }
+    
+    private static string GenerateClass(string className, string body)
+    {
+        string indentBody = string.Join(Environment.NewLine, body.Split(Environment.NewLine).Select(line => "    " + line));
+        return $$"""
+               // This file is auto-generated. Do not edit manually.
+               namespace Sillago.Materials;
+               
+               using Types;
+
+               [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+               public partial class {{className}}
+               {
+               {{indentBody}}
+               }
+               
+               """;
     }
 
     private static void GenerateSubstance(Row row, StringBuilder sb)
@@ -59,6 +77,7 @@ class Program
         string flags = Program.ParseFlags(row["Flags"]);
         string density = row["Density"];
         string meltingPoint = Program.ParseTemperature(row["Melting Point"]);
+        var (forms, extra) = Program.ParseNotes(row["Notes"]);
   
         string line = $"""
                        public static Material {safeName} = new {(isMetal ? "MetalMaterial" : "IngotMaterial")}(
@@ -68,7 +87,7 @@ class Program
                            {symbol},
                            {flags},
                            density: {density}f,
-                           meltingPoint: {meltingPoint});
+                           meltingPoint: {meltingPoint}){GenerateNameOverrides(forms)};
                            
                        """;
 
@@ -91,6 +110,7 @@ class Program
         string flags = Program.ParseFlags(row["Flags"]);
         string density = row["Density"];
         string liqueficationPoint = Program.ParseTemperature(row["Liquefication Point"]);
+        var (forms, extra) = Program.ParseNotes(row["Notes"]);
 
         string line = $"""
                        public static Material {safeName} = new {(isCrystalline ? "CrystallineMaterial" : "PowderMaterial")}(
@@ -100,7 +120,7 @@ class Program
                            {symbol},
                            {flags},
                            density: {density}f,
-                           liquificationPoint: {liqueficationPoint});
+                           liquificationPoint: {liqueficationPoint}){GenerateNameOverrides(forms)};
 
                        """;
 
@@ -123,6 +143,7 @@ class Program
         string density = row["Density"];
         string freezingPoint = Program.ParseTemperature(row["Freezing Point"]);
         string vaporisationPoint = Program.ParseTemperature(row["Vaporisation Point"]);
+        var (forms, extra) = Program.ParseNotes(row["Notes"]);
 
         string line = $"""
                        public static Material {safeName} = new FluidMaterial(
@@ -133,7 +154,7 @@ class Program
                            {flags},
                            density: {density}f,
                            freezingPoint: {freezingPoint},
-                           vaporisationPoint: {vaporisationPoint});
+                           vaporisationPoint: {vaporisationPoint}){GenerateNameOverrides(forms)};
 
                        """;
 
@@ -154,6 +175,7 @@ class Program
         string minTemp = Program.ParseTemperature(row["Min Temp"]);
         string maxTemp = Program.ParseTemperature(row["Max Temp"]);
         string feedsOn = Program.GenerateSafeName(row["Feeds On"]);
+        var (forms, extra) = Program.ParseNotes(row["Notes"]);
 
         string line = $"""
                        public static Material {safeName} = new BioMaterial(
@@ -162,7 +184,7 @@ class Program
                             {flags},
                             minTemp: {minTemp},
                             maxTemp: {maxTemp},
-                            feedsOn: Materials.{feedsOn});
+                            feedsOn: Materials.{feedsOn}){GenerateNameOverrides(forms)};
 
                        """;
 
@@ -264,6 +286,56 @@ class Program
         return string.Join(" | ", flags.Split(", ").Select(f => $"MaterialFlags.{f}"));
     }
 
+    private static (Dictionary<string, string> forms, string extra) ParseNotes(string notes)
+    {
+        //Forms [Distilled Water (Liquid), Distilled Ice (Ice), Distilled Steam (Gas)]
+        if (Program.IsBlank(notes))
+            return (new Dictionary<string, string>(), string.Empty);
+        
+        // find Forms [...]
+        Dictionary<string, string> forms = new();
+        string extra = string.Empty;
+        int formsStart = notes.IndexOf("Forms [", StringComparison.InvariantCultureIgnoreCase);
+        int formsEnd = notes.IndexOf(']', formsStart);
+        
+        if (formsStart >= 0 && formsEnd > formsStart)
+        {
+            string formsContent = notes[(formsStart + 7)..formsEnd].Trim();
+            string[] formParts = formsContent.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            foreach (string formPart in formParts)
+            {
+                string[] keyValue = formPart.Split('(', StringSplitOptions.RemoveEmptyEntries);
+                if (keyValue.Length == 2)
+                {
+                    string formName = keyValue[0].Trim();
+                    string formType = keyValue[1].TrimEnd(')').Trim();
+                    forms[formType] = formName;
+                }
+            }
+
+            extra = notes[(formsEnd + 1)..].Trim();
+        }
+        else
+            extra = notes.Trim();
+        
+        return (forms, extra);
+    }
+
+    private static string GenerateNameOverrides(Dictionary<string, string> forms)
+    {
+        if (forms.Count == 0)
+            return string.Empty;
+
+        StringBuilder sb = new();
+        foreach (var kvp in forms)
+        {
+            sb.AppendLine();
+            sb.Append($"        .OverrideFormName(MaterialType.{kvp.Key}, \"{kvp.Value}\")");
+        }
+
+        return sb.ToString();
+    }
+    
     private static string ParseSymbol(string symbol)
     {
         Symbol parsedSymbol = SymbolParser.Parse(symbol);
