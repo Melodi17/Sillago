@@ -6,7 +6,7 @@ namespace Sillago.Materials.Types;
 using Items;
 using Utils;
 
-public class Alloy : IngotMaterial
+public class Alloy : MetalMaterial
 {
     public AlloyComponent[] Components;
     public Alloy(string name, params AlloyComponent[] components)
