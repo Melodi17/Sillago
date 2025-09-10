@@ -72,7 +72,7 @@ public class SymbolParser
             index++;
 
         if (start == index)
-            return 1; // No number found, default to 1
+            return 1;
 
         string numberStr = input[start..index];
         if (int.TryParse(numberStr, out int number))
