@@ -1,22 +1,30 @@
 namespace Sillago.Items;
 
-public class Inventory
+using System.Collections;
+
+/// <summary>
+/// Basic inventory system container.
+/// </summary>
+public class Inventory : IEnumerable<ItemStack>
 {
     public Inventory(int capacity)
     {
         this.Capacity = capacity;
-        this.Items    = new List<ItemStack>(capacity);
+        this.Items = new List<ItemStack>(capacity);
     }
-    public List<ItemStack> Items    { get; }
-    public int             Capacity { get; }
+    public List<ItemStack> Items { get; }
+    public int Capacity { get; }
 
-    public event Action<Inventory, ItemStack> ItemAdded;
-    public event Action<Inventory, ItemStack> ItemRemoved;
-    public event Action<Inventory> ContentChanged;
+    public event Action<Inventory, ItemStack>? ItemAdded;
+    public event Action<Inventory, ItemStack>? ItemRemoved;
+    public event Action<Inventory>? ContentChanged;
+    
+    public IEnumerator<ItemStack> GetEnumerator() => this.Items.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
-    public bool Add(ItemStack itemStack)
+    public virtual bool Add(ItemStack itemStack)
     {
-        if (itemStack == null || itemStack.Item == null || itemStack.Amount <= 0)
+        if (itemStack.Amount <= 0)
             return false;
 
         // Check if the item already exists in the inventory
@@ -29,10 +37,10 @@ public class Inventory
                 return true;
             }
         }
-        
+
         if (this.Items.Count >= this.Capacity)
             return false;
-        
+
         // If not found, add a new item stack
         ItemStack stack = itemStack.Copy();
         this.Items.Add(stack);
@@ -42,12 +50,12 @@ public class Inventory
         return true;
     }
 
-    public bool Remove(Item item, int count = 1)
+    public virtual bool Remove(Item item, int count = 1)
     {
-        if (item == null || count <= 0)
+        if (count <= 0)
             return false;
 
-        ItemStack foundStack = this.Items.FirstOrDefault(x => x.Item.Id == item.Id);
+        ItemStack? foundStack = this.Items.FirstOrDefault(x => x.Item.Id == item.Id);
         if (foundStack == null)
             return false;
 
@@ -67,12 +75,12 @@ public class Inventory
 
     public bool Remove(ItemStack stack) => this.Remove(stack.Item, stack.Amount);
 
-    public bool Contains(Item item, int count = 1)
+    public virtual bool Contains(Item item, int count = 1)
     {
-        if (item == null || count <= 0)
+        if (count <= 0)
             return false;
 
-        ItemStack foundStack = this.Items.FirstOrDefault(x => x.Item.Id == item.Id);
+        ItemStack? foundStack = this.Items.FirstOrDefault(x => x.Item.Id == item.Id);
         if (foundStack == null)
             return false;
 

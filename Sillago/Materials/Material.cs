@@ -7,16 +7,35 @@ using Utils;
 
 public abstract class Material
 {
-    public int Color;     // ARGB format, e.g. 0xFF0000FF for blue
-    public float Density; // kg/m^3
+    /// <summary>
+    /// Uses a 0xRRGGBB format.
+    /// </summary>
+    public int Color;
+    
+    /// <summary>
+    /// The density of the material in kilograms per cubic meter (kg/m³).
+    /// </summary>
+    public float Density;
 
     // public ConductionProperties ConductionProperties;
     // public FluidHoldingProperties FluidHoldingProperties;
-
+    
     public string Name;
     public Symbol Symbol { get; set; }
+    
+    /// <summary>
+    /// Flags that define the properties and behaviors of the material.
+    /// </summary>
     public MaterialFlags Flags { get; set; }
+    
+    /// <summary>
+    /// Visual set for rendering the material in different forms.
+    /// </summary>
     public VisualSet VisualSet { get; set; }
+    
+    /// <summary>
+    /// Form names for different material states, e.g., Powder, Ingot, Liquid, etc.
+    /// </summary>
     public Dictionary<MaterialType, string> FormNames;
     
     public Material(string name)

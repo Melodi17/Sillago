@@ -11,7 +11,7 @@ public class Registry
         {
             bool isRelevantType = field.FieldType == typeof(T) || field.FieldType.IsSubclassOf(typeof(T));
             if (isRelevantType)
-                yield return ((T) field.GetValue(null))!;
+                yield return (T) field.GetValue(null)!;
         }
     }
 
@@ -23,7 +23,7 @@ public class Registry
             bool isRelevantType = field.FieldType == typeof(T) || field.FieldType.IsSubclassOf(typeof(T));
             bool nameMatches = field.Name.Equals(name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
             if (isRelevantType && nameMatches)
-                return (T) field.GetValue(null);
+                return (T) field.GetValue(null)!;
         }
         return default;
     }

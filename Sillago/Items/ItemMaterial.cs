@@ -11,14 +11,13 @@ public class ItemMaterial : Item
 
     public override bool CountAsVolume => this.Type is MaterialType.Liquid or MaterialType.Gas;
 
-    public ItemMaterial(Material material, MaterialType type)
+    public ItemMaterial(Material material, MaterialType type) : base(
+        Identifier.Create($"{material.Name}_{type}"),
+        material.FormNames[type],
+        material.GetDescription().ToString())
     {
         this.Material = material;
         this.Type     = type;
-
-        this.Name        = material.FormNames[type];
-        this.Id          = Identifier.Create($"{material.Name}_{type}");
-        this.Description = material.GetDescription().ToString();
     }
 
     public void SmeltsInto(ItemMaterial result, float temperature, int inputQuantity = 1, int outputQuantity = 1)

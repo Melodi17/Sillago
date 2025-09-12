@@ -9,7 +9,13 @@ public class RecipeTests
 {
     private Recipe CreateSampleRecipeWithRequirements(IRecipeRequirement[] requirements)
     {
-        Recipe recipe = new("dingle", "dingle", 0, [], [], requirements);
+        Recipe recipe = new(
+            "dingle",
+            "dingle",
+            0,
+            [],
+            [],
+            requirements);
         return recipe;
     }
 
@@ -18,43 +24,43 @@ public class RecipeTests
     {
         Recipe recipe = CreateSampleRecipeWithRequirements([]);
         MachineState state = new();
-        
+
         Assert.That(recipe.AreRequirementsMet(state), Is.True);
     }
-    
+
     [Test]
     public void AreRequirementsMet_AllRequirementsMet_ReturnsTrue()
     {
         IRecipeRequirement req1 = new DummyRequirement(true);
         IRecipeRequirement req2 = new DummyRequirement(true);
-        
+
         Recipe recipe = this.CreateSampleRecipeWithRequirements([req1, req2]);
         MachineState state = new();
-        
+
         Assert.That(recipe.AreRequirementsMet(state), Is.True);
     }
-    
+
     [Test]
     public void AreRequirementsMet_OneRequirementNotMet_ReturnsFalse()
     {
         IRecipeRequirement req1 = new DummyRequirement(true);
         IRecipeRequirement req2 = new DummyRequirement(false);
-        
+
         Recipe recipe = this.CreateSampleRecipeWithRequirements([req1, req2]);
         MachineState state = new();
-        
+
         Assert.That(recipe.AreRequirementsMet(state), Is.False);
     }
-    
+
     [Test]
     public void GetInfo_IncludesAllDetails()
     {
-        ItemStack itemInput = new Item { Id = "InputItem", Name = "Input Item" }.Stack(2);
-        ItemStack itemOutput = new Item { Id = "OutputItem", Name = "Output Item" }.Stack(1);
-        
+        ItemStack itemInput = new Item("InputItem", "Input Item").Stack(2);
+        ItemStack itemOutput = new Item("OutputItem", "Output Item").Stack(1);
+
         IRecipeRequirement req1 = new DummyRequirement(true);
         IRecipeRequirement req2 = new DummyRequirement(false);
-        
+
         Recipe recipe = new(
             "test_id",
             "Test Recipe",
@@ -63,9 +69,9 @@ public class RecipeTests
             [itemOutput],
             [req1, req2],
             TimeSpan.FromSeconds(5));
-        
+
         string info = recipe.GetInfo();
-        
+
         Assert.That(info, Does.Contain("ID: test_id"));
         Assert.That(info, Does.Contain("Duration: 5s"));
         Assert.That(info, Does.Contain("Inputs:"));

@@ -3,12 +3,21 @@ namespace Sillago.Items;
 using Materials;
 using Utils;
 
+/// <summary>
+/// Registry class for managing and accessing all defined items.
+/// </summary>
 public static class Items
 {
     private static readonly Dictionary<string, Item> _entries = new();
 
+    /// <summary>
+    /// Fetches all registered items.
+    /// </summary>
     public static IEnumerable<Item> Entries => Items._entries.Values;
 
+    /// <summary>
+    /// Registers a new item. Throws an exception if an item with the same ID already exists.
+    /// </summary>
     public static void Register(Item item)
     {
         if (item == null || string.IsNullOrEmpty(item.Id))
@@ -20,6 +29,9 @@ public static class Items
         Items._entries[item.Id] = item;
     }
 
+    /// <summary>
+    /// Retrieves an item by its unique ID. Throws an exception if not found.
+    /// </summary>
     public static Item Get(string id)
     {
         if (string.IsNullOrEmpty(id))
@@ -31,6 +43,9 @@ public static class Items
         throw new KeyNotFoundException($"No item found with ID '{id}'.");
     }
 
+    /// <summary>
+    /// Retrieves a specific item material based on the given material and material type/form.
+    /// </summary>
     public static ItemMaterial GetMaterial(Material material, MaterialType type)
     {
         string itemId = Identifier.Create($"{material.Name}_{type}");
@@ -40,6 +55,10 @@ public static class Items
         throw new KeyNotFoundException($"No item found for material '{material.Name}' with type '{type}'.");
     }
     
+    /// <summary>
+    /// Tries to retrieve a specific item material based on the given material and material type/form.
+    /// If not found, returns null.
+    /// </summary>
     public static ItemMaterial? TryGetMaterial(Material material, MaterialType type)
     {
         string itemId = Identifier.Create($"{material.Name}_{type}");
