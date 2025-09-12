@@ -20,7 +20,7 @@ To get started with Sillago, follow these steps:
 3. Copy the compiled DLLs into your project and add references to them.
 4. Start using Sillago!
 
-## Quick Start Docs
+## Usage
 ```csharp
 using Sillago;
 
@@ -51,3 +51,6 @@ foreach (var item in Items.Entries)
     Console.WriteLine($"Item: {item.Name}");
 }
 ```
+
+## Documentation
+See the full documentation [here](https://github.com/Melodi17/Sillago/wiki).
