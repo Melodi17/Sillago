@@ -5,7 +5,7 @@ using System.Diagnostics;
 public interface IRecipeRequirement
 {
     string GetInfo();
-    bool IsMet(MachineCapabilityHolder capabilityHolder);
+    bool IsMet(IMachine machine);
 }
 
 public class TemperatureRequirement : IRecipeRequirement
@@ -34,9 +34,9 @@ public class TemperatureRequirement : IRecipeRequirement
         throw new UnreachableException("Invalid state: both AtLeast and AtMax are null.");
     }
     
-    public bool IsMet(MachineCapabilityHolder capabilityHolder)
+    public bool IsMet(IMachine machine)
     {
-        ITemperatureCapability capability = capabilityHolder.Get<ITemperatureCapability>();
+        ITemperatureCapability capability = machine.Get<ITemperatureCapability>();
         
         if (this.AtLeast != null && capability.Temperature < this.AtLeast)
             return false;

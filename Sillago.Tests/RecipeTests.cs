@@ -23,9 +23,9 @@ public class RecipeTests
     public void AreRequirementsMet_NoRequirements_ReturnsTrue()
     {
         Recipe recipe = CreateSampleRecipeWithRequirements([]);
-        MachineCapabilityHolder capabilityHolder = new();
+        DummyMachine machine = new();
 
-        Assert.That(recipe.AreRequirementsMet(capabilityHolder), Is.True);
+        Assert.That(recipe.AreRequirementsMet(machine), Is.True);
     }
 
     [Test]
@@ -35,9 +35,9 @@ public class RecipeTests
         IRecipeRequirement req2 = new DummyRequirement(true);
 
         Recipe recipe = this.CreateSampleRecipeWithRequirements([req1, req2]);
-        MachineCapabilityHolder capabilityHolder = new();
+        DummyMachine machine = new();
 
-        Assert.That(recipe.AreRequirementsMet(capabilityHolder), Is.True);
+        Assert.That(recipe.AreRequirementsMet(machine), Is.True);
     }
 
     [Test]
@@ -47,9 +47,9 @@ public class RecipeTests
         IRecipeRequirement req2 = new DummyRequirement(false);
 
         Recipe recipe = this.CreateSampleRecipeWithRequirements([req1, req2]);
-        MachineCapabilityHolder capabilityHolder = new();
+        DummyMachine machine = new();
 
-        Assert.That(recipe.AreRequirementsMet(capabilityHolder), Is.False);
+        Assert.That(recipe.AreRequirementsMet(machine), Is.False);
     }
 
     [Test]
@@ -80,4 +80,9 @@ public class RecipeTests
         Assert.That(info, Does.Contain("- 1 x Output Item"));
         Assert.That(info, Does.Contain("Dummy Requirement"), "Should include requirement info");
     }
+}
+
+public class DummyMachine : IMachine, IDummyCapability 
+{
+    
 }

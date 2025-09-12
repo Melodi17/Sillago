@@ -10,18 +10,17 @@ public class MachineCapabilityHolderTests
     [Test]
     public void Get_MissingCapability_Fails()
     {
-        MachineCapabilityHolder capabilityHolder = new();
-        Assert.Throws<KeyNotFoundException>(() => capabilityHolder.Get<DummyCapability>());
+        IMachine machine = new DummyMachine();
+        Assert.Throws<InvalidOperationException>(() => machine.Get<IOtherDummyCapability>());
     }
     
     [Test]
     public void Get_ExistingCapability_Succeeds()
     {
-        MachineCapabilityHolder capabilityHolder = new();
-        DummyCapability capability = new();
-        capabilityHolder.Add(capability);
+        DummyMachine dummy = new DummyMachine();
+        IMachine machine = dummy;
         
-        var retrieved = capabilityHolder.Get<DummyCapability>();
-        Assert.That(retrieved, Is.SameAs(capability));
+        var retrieved = machine.Get<IDummyCapability>();
+        Assert.That(retrieved, Is.SameAs(dummy));
     }
 }

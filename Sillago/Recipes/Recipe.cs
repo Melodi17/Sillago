@@ -54,8 +54,8 @@ public class Recipe
         return sb.ToString();
     }
 
-    public bool AreRequirementsMet(MachineCapabilityHolder capabilityHolder)
+    public bool AreRequirementsMet(IMachine machine)
     {
-        return this.Requirements.All(r => r.IsMet(capabilityHolder));
+        return this.Requirements.All(r => r.IsMet(machine));
     }
 }
