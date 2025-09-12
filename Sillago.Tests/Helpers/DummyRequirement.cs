@@ -7,5 +7,5 @@ using Sillago.Recipes;
 public class DummyRequirement(bool result) : IRecipeRequirement
 {
     public string GetInfo() => "Dummy Requirement";
-    public bool IsMet(MachineState state) => result;
+    public bool IsMet(MachineCapabilityHolder capabilityHolder) => result;
 }

@@ -1,6 +1,6 @@
 namespace Sillago.Recipes;
 
-public class MachineState
+public class MachineCapabilityHolder
 {
     private readonly Dictionary<Type, ICapability> _capabilities = new();
 

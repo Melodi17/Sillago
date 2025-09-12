@@ -23,9 +23,9 @@ public class RecipeTests
     public void AreRequirementsMet_NoRequirements_ReturnsTrue()
     {
         Recipe recipe = CreateSampleRecipeWithRequirements([]);
-        MachineState state = new();
+        MachineCapabilityHolder capabilityHolder = new();
 
-        Assert.That(recipe.AreRequirementsMet(state), Is.True);
+        Assert.That(recipe.AreRequirementsMet(capabilityHolder), Is.True);
     }
 
     [Test]
@@ -35,9 +35,9 @@ public class RecipeTests
         IRecipeRequirement req2 = new DummyRequirement(true);
 
         Recipe recipe = this.CreateSampleRecipeWithRequirements([req1, req2]);
-        MachineState state = new();
+        MachineCapabilityHolder capabilityHolder = new();
 
-        Assert.That(recipe.AreRequirementsMet(state), Is.True);
+        Assert.That(recipe.AreRequirementsMet(capabilityHolder), Is.True);
     }
 
     [Test]
@@ -47,9 +47,9 @@ public class RecipeTests
         IRecipeRequirement req2 = new DummyRequirement(false);
 
         Recipe recipe = this.CreateSampleRecipeWithRequirements([req1, req2]);
-        MachineState state = new();
+        MachineCapabilityHolder capabilityHolder = new();
 
-        Assert.That(recipe.AreRequirementsMet(state), Is.False);
+        Assert.That(recipe.AreRequirementsMet(capabilityHolder), Is.False);
     }
 
     [Test]

@@ -4,24 +4,24 @@ using Helpers;
 using Recipes;
 
 [TestFixture]
-public class MachineStateTests
+public class MachineCapabilityHolderTests
 {
 
     [Test]
     public void Get_MissingCapability_Fails()
     {
-        MachineState state = new();
-        Assert.Throws<KeyNotFoundException>(() => state.Get<DummyCapability>());
+        MachineCapabilityHolder capabilityHolder = new();
+        Assert.Throws<KeyNotFoundException>(() => capabilityHolder.Get<DummyCapability>());
     }
     
     [Test]
     public void Get_ExistingCapability_Succeeds()
     {
-        MachineState state = new();
+        MachineCapabilityHolder capabilityHolder = new();
         DummyCapability capability = new();
-        state.Add(capability);
+        capabilityHolder.Add(capability);
         
-        var retrieved = state.Get<DummyCapability>();
+        var retrieved = capabilityHolder.Get<DummyCapability>();
         Assert.That(retrieved, Is.SameAs(capability));
     }
 }
