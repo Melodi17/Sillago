@@ -8,8 +8,8 @@ public class RecipeBuilder
     public RecipeType Type { get; }
 
     private string _name;
-    private readonly List<ItemStack> _inputs = [];
-    private readonly List<ItemStack> _outputs = [];
+    private readonly List<RecipeIngredient> _inputs = [];
+    private readonly List<RecipeResult> _outputs = [];
     private readonly List<IRecipeRequirement> _requirements = [];
     private TimeSpan _duration = TimeSpan.FromSeconds(0.5);
     
@@ -31,7 +31,7 @@ public class RecipeBuilder
         this._inputs.Add(item.Stack(quantity));
         return this;
     }
-    public RecipeBuilder AddInputs(List<ItemStack> ingredients)
+    public RecipeBuilder AddInputs(List<RecipeIngredient> ingredients)
     {
         this._inputs.AddRange(ingredients);
         return this;
@@ -41,7 +41,7 @@ public class RecipeBuilder
         this._outputs.Add(item.Stack(quantity));
         return this;
     }
-    public RecipeBuilder AddOutputs(List<ItemStack> outputs)
+    public RecipeBuilder AddOutputs(List<RecipeResult> outputs)
     {
         this._outputs.AddRange(outputs);
         return this;

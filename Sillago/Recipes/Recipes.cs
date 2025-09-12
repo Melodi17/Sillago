@@ -63,6 +63,6 @@ public static class Recipes
     /// </summary>
     public static IEnumerable<Recipe> Consuming(Item item)
     {
-        return Recipes.Entries.Where(r => r.Inputs.Any(i => i.Item == item));
+        return Recipes.Entries.Where(r => r.Inputs.Any(i => i.Contains(item)));
     }
 }

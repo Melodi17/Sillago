@@ -1,5 +1,7 @@
 namespace Sillago.Items;
 
+using Recipes;
+
 public class ItemStack
 {
     public int Amount;

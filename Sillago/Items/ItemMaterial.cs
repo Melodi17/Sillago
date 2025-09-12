@@ -51,7 +51,7 @@ public class ItemMaterial : Item
         
         RecipeBuilder builder = new RecipeBuilder($"{this.Id}_fusing_from_{string.Join("_", ingredients.Select(i => i.Item.Id))}", RecipeType.Fusing)
             .Name($"Fusing {string.Join(", ", ingredients.Select(i => i.Item.Name))} into {this.Name}")
-            .AddInputs(ingredients)
+            .AddInputs(ingredients.Select(x=>new RecipeIngredient([x])).ToList())
             .AddOutput(this, outputQuantity)
             .AddRequirement(new TemperatureRequirement(temperature))
             .SetDuration(ingredients.Count * TimeSpan.FromSeconds(0.5) + TimeSpan.FromSeconds(this.Material.Density / 1200));
@@ -68,7 +68,7 @@ public class ItemMaterial : Item
             $"{this.Id}_mixing_from_{string.Join("_", ingredients.Select(i => i.Item.Id))}",
             RecipeType.Mixing)
             .Name($"Mixing {string.Join(", ", ingredients.Select(i => i.Item.Name))} into {this.Name}")
-            .AddInputs(ingredients)
+            .AddInputs(ingredients.Select(x=>new RecipeIngredient([x])).ToList())
             .AddOutput(this, outputQuantity)
             .SetDuration(ingredients.Count * TimeSpan.FromSeconds(0.5) + TimeSpan.FromSeconds(this.Material.Density / 2000));
         
@@ -164,7 +164,7 @@ public class ItemMaterial : Item
             RecipeType.Macerating)
             .Name($"Macerating {this.Name} into {string.Join(", ", outputs.Select(o => o.Item.Name))}")
             .AddInput(this, 1)
-            .AddOutputs(outputs)
+            .AddOutputs(outputs.Select(x=>new RecipeResult(x)).ToList())
             .SetDuration(TimeSpan.FromSeconds(this.Material.Density / 2000) + TimeSpan.FromSeconds(5));
         
         Recipes.Register(builder.Build());
@@ -176,7 +176,7 @@ public class ItemMaterial : Item
                 RecipeType.Distilling)
             .Name($"Distilling {this.Name} into {string.Join(", ", results.Select(r => r.Item.Name))}")
             .AddInput(this, inputQuantity)
-            .AddOutputs(results)
+            .AddOutputs(results.Select(x=>new RecipeResult(x)).ToList())
             .SetDuration(TimeSpan.FromSeconds(this.Material.Density / 2500) * inputQuantity);
         
         if (temperatureRequirement != null)

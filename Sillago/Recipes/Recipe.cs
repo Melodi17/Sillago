@@ -9,8 +9,8 @@ public class Recipe
     public string Name { get; }
     public RecipeType Type { get; }
 
-    public IReadOnlyList<ItemStack> Inputs { get; }
-    public IReadOnlyList<ItemStack> Outputs { get; }
+    public IReadOnlyList<RecipeIngredient> Inputs { get; }
+    public IReadOnlyList<RecipeResult> Outputs { get; }
 
     public IReadOnlyList<IRecipeRequirement> Requirements { get; }
     public TimeSpan Duration { get; }
@@ -19,8 +19,8 @@ public class Recipe
         string id,
         string name,
         RecipeType type,
-        IReadOnlyList<ItemStack> inputs,
-        IReadOnlyList<ItemStack> outputs,
+        IReadOnlyList<RecipeIngredient> inputs,
+        IReadOnlyList<RecipeResult> outputs,
         IReadOnlyList<IRecipeRequirement>? requirements = null,
         TimeSpan duration = default)
     {
@@ -41,11 +41,11 @@ public class Recipe
         sb.AppendLine($"Duration: {this.Duration.TotalSeconds:0.##}s");
 
         sb.AppendLine($"Inputs:");
-        foreach (ItemStack input in this.Inputs)
+        foreach (RecipeIngredient input in this.Inputs)
             sb.AppendLine($"  - {input}");
 
         sb.AppendLine($"Outputs:");
-        foreach (ItemStack output in this.Outputs)
+        foreach (RecipeResult output in this.Outputs)
             sb.AppendLine($"  - {output}");
 
         foreach (IRecipeRequirement requirement in this.Requirements)

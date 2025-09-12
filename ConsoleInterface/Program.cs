@@ -148,8 +148,8 @@ class Program
             .Entries
             .Where(r => r.Id.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
                         || r.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
-                        || r.Inputs.Any(i => i.Item.Name.Contains(
-                            searchTerm, StringComparison.OrdinalIgnoreCase))
+                        || r.Inputs.Any(i => i.Options.Any(o => o.Item.Name.Contains(
+                            searchTerm, StringComparison.OrdinalIgnoreCase)))
                         || r.Outputs.Any(o => o.Item.Name.Contains(
                             searchTerm, StringComparison.OrdinalIgnoreCase)))
             .ToList();
@@ -203,16 +203,20 @@ class Program
         inputsTable.AddColumn("Item Name");
         inputsTable.AddColumn("Quantity");
 
-        foreach (ItemStack input in recipe.Inputs)
-            inputsTable.AddRow(input.Item.Id, input.Item.Name, input.Amount.ToString());
+        foreach (RecipeIngredient input in recipe.Inputs)
+            inputsTable.AddRow(
+                string.Join(" OR ", input.Options.Select(o => o.Item.Id)),
+                string.Join(" OR ", input.Options.Select(o => o.Item.Name)),
+                string.Join(" OR ", input.Options.Select(o => o.Amount.ToString())));
 
         Table outputsTable = new();
         outputsTable.AddColumn("Item ID");
         outputsTable.AddColumn("Item Name");
         outputsTable.AddColumn("Quantity");
+        outputsTable.AddColumn("Chance");
 
-        foreach (ItemStack output in recipe.Outputs)
-            outputsTable.AddRow(output.Item.Id, output.Item.Name, output.Amount.ToString());
+        foreach (RecipeResult output in recipe.Outputs)
+            outputsTable.AddRow(output.Item.Id, output.Item.Name, output.AmountRange, $"{output.ResultChance}%");
 
         string requirementsText = recipe.Requirements.Count > 0
             ? string.Join("\n", recipe.Requirements.Select(x => x.GetInfo()))
