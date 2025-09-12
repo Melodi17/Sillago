@@ -29,4 +29,8 @@ public class RecipeIngredient
     {
         return this.Options.Any(o => o.Item == item);
     }
+    public bool IsAvailable(Inventory input)
+    {
+        return this.Options.Any(option => input.GetTotalAmount(option.Item) >= option.Amount);
+    }
 }

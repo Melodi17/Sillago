@@ -10,16 +10,16 @@ public class Inventory : IEnumerable<ItemStack>
     public Inventory(int capacity)
     {
         this.Capacity = capacity;
-        this.Items = new List<ItemStack>(capacity);
+        this.Stacks = new List<ItemStack>(capacity);
     }
-    public List<ItemStack> Items { get; }
+    public List<ItemStack> Stacks { get; }
     public int Capacity { get; }
 
     public event Action<Inventory, ItemStack>? ItemAdded;
     public event Action<Inventory, ItemStack>? ItemRemoved;
     public event Action<Inventory>? ContentChanged;
     
-    public IEnumerator<ItemStack> GetEnumerator() => this.Items.GetEnumerator();
+    public IEnumerator<ItemStack> GetEnumerator() => this.Stacks.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
     public virtual bool Add(ItemStack itemStack)
@@ -28,7 +28,7 @@ public class Inventory : IEnumerable<ItemStack>
             return false;
 
         // Check if the item already exists in the inventory
-        foreach (ItemStack existingItem in this.Items)
+        foreach (ItemStack existingItem in this.Stacks)
         {
             if (existingItem.Item.Id == itemStack.Item.Id)
             {
@@ -38,12 +38,12 @@ public class Inventory : IEnumerable<ItemStack>
             }
         }
 
-        if (this.Items.Count >= this.Capacity)
+        if (this.Stacks.Count >= this.Capacity)
             return false;
 
         // If not found, add a new item stack
         ItemStack stack = itemStack.Copy();
-        this.Items.Add(stack);
+        this.Stacks.Add(stack);
         this.ItemAdded?.Invoke(this, stack);
         this.ContentChanged?.Invoke(this);
 
@@ -55,7 +55,7 @@ public class Inventory : IEnumerable<ItemStack>
         if (count <= 0)
             return false;
 
-        ItemStack? foundStack = this.Items.FirstOrDefault(x => x.Item.Id == item.Id);
+        ItemStack? foundStack = this.Stacks.FirstOrDefault(x => x.Item.Id == item.Id);
         if (foundStack == null)
             return false;
 
@@ -66,7 +66,7 @@ public class Inventory : IEnumerable<ItemStack>
         this.ContentChanged?.Invoke(this);
         if (foundStack.Amount == 0)
         {
-            this.Items.Remove(foundStack);
+            this.Stacks.Remove(foundStack);
             this.ItemRemoved?.Invoke(this, foundStack);
         }
 
@@ -80,7 +80,7 @@ public class Inventory : IEnumerable<ItemStack>
         if (count <= 0)
             return false;
 
-        ItemStack? foundStack = this.Items.FirstOrDefault(x => x.Item.Id == item.Id);
+        ItemStack? foundStack = this.Stacks.FirstOrDefault(x => x.Item.Id == item.Id);
         if (foundStack == null)
             return false;
 
@@ -91,4 +91,10 @@ public class Inventory : IEnumerable<ItemStack>
     }
 
     public bool Contains(ItemStack stack) => this.Contains(stack.Item, stack.Amount);
+    public int GetTotalAmount(Item item)
+    {
+        return this.Stacks
+            .Where(x => x.Item == item)
+            .Sum(x => x.Amount);
+    }
 }
