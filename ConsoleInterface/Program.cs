@@ -12,7 +12,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        DataLoader.Initialize();
+        SillagoEngine.Initialize();
         Repl();
     }
 

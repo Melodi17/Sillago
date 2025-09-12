@@ -6,7 +6,7 @@ using Materials;
 using Recipes;
 using Utils;
 
-public class DataLoader
+public class SillagoEngine
 {
     public static void Initialize()
     {
