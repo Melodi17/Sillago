@@ -13,7 +13,7 @@ public class RecipeResult
         ? this.MinResult.ToString() 
         : $"{this.MinResult}-{this.MaxResult}";
 
-    public RecipeResult(
+    private RecipeResult(
         ItemStack item,
         int resultChance = 100)
     {
@@ -26,7 +26,7 @@ public class RecipeResult
         this.MaxResult = item.Amount;
     }
     
-    public RecipeResult(
+    private RecipeResult(
         Item item,
         int minResult,
         int maxResult,
@@ -44,6 +44,16 @@ public class RecipeResult
         this.MinResult = minResult;
         this.MaxResult = maxResult;
     }
+    
+    public static RecipeResult Of(
+        ItemStack item,
+        int resultChance = 100) => new(item, resultChance);
+    
+    public static RecipeResult OfBetween(
+        Item item,
+        int minResult,
+        int maxResult,
+        int resultChance = 100) => new(item, minResult, maxResult, resultChance);
     
     public ItemStack? GetResult()
     {

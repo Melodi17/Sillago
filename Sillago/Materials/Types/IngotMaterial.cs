@@ -113,6 +113,7 @@ public class IngotMaterial : Material
             yield return fineWire;
             yield return cable;
 
+            // Rod -> wire
             yield return new RecipeBuilder(RecipeType.Wiremilling)
                 .NamePatterned($"<input> <verb>")
                 .AddInput(rod.Stack(1))
@@ -120,18 +121,19 @@ public class IngotMaterial : Material
                 .SetDuration(TimeSpan.FromSeconds(1))
                 .Build();
 
+            // Wire -> fine wire
             yield return new RecipeBuilder(RecipeType.Wiremilling)
                 .NamePatterned($"<input> <verb>")
-                .AddInput(rod.Stack(1))
-                .AddOutput(fineWire.Stack(4))
+                .AddInput(wire.Stack(1))
+                .AddOutput(fineWire.Stack(2))
                 .SetDuration(TimeSpan.FromSeconds(1))
                 .Build();
             
             // Direct rod -> fine wire
             yield return new RecipeBuilder(RecipeType.Wiremilling)
                 .NamePatterned($"<input> <verb>")
-                .AddInput(ingot.Stack(1))
-                .AddOutput(fineWire.Stack(8))
+                .AddInput(rod.Stack(1))
+                .AddOutput(fineWire.Stack(4))
                 .SetDuration(TimeSpan.FromSeconds(2))
                 .Build();
 
@@ -141,6 +143,7 @@ public class IngotMaterial : Material
                     RecipeIngredient.Of(
                         Items.GetMaterialForm(Materials.Rubber, MaterialType.Liquid).Stack(50));
 
+                // Fine wire + rubber -> cable
                 new RecipeBuilder(RecipeType.ChemicalBathing)
                     .NamePatterned($"<input> <verb>")
                     .AddInput(wire.Stack(1))

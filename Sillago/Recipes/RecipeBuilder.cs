@@ -24,6 +24,11 @@ public class RecipeBuilder
         this._name = () => name;
         return this;
     }
+    public RecipeBuilder AddInput(ItemStack stack)
+    {
+        this._inputs.Add(stack);
+        return this;
+    }
     public RecipeBuilder AddInput(RecipeIngredient ingredient)
     {
         this._inputs.Add(ingredient);

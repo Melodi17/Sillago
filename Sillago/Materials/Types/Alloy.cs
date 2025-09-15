@@ -103,8 +103,8 @@ public class Alloy : MetalMaterial
                 .NamePatterned($"<output> alloy <verb>")
                 .AddOutput(powder.Stack(this.Components.Sum(x => x.Amount)))
 
-                // Assume mixing takes 1 second per 2000 kg/m³ of material processed
-                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 2000));
+                // Assume mixing takes 1 second per 30,000 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 30_000));
 
             foreach (AlloyComponent component in this.Components)
                 mixingRecipeBuilder.AddInput(
@@ -112,13 +112,13 @@ public class Alloy : MetalMaterial
 
             mixingRecipeBuilder.BuildAndRegister();
 
-            var dustFusingRecipeBuilder = new RecipeBuilder(RecipeType.ArcFusing)
+            var dustFusingRecipeBuilder = new RecipeBuilder(RecipeType.Fusing)
                 .NamePatterned("<output> direct dust <verb>")
                 .AddOutput(ingot.Stack(this.Components.Sum(x => x.Amount)))
 
-                // Assume arc fusing takes 1 second per 1000 kg/m³ of material processed
-                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 1000))
-                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint * 0.9f));
+                // Assume arc fusing takes 2 seconds per 10,000 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds((this.Components.Sum(x => x.Value.Density * x.Amount) / 10_000) * 2))
+                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint));
 
             foreach (AlloyComponent component in this.Components)
                 dustFusingRecipeBuilder.AddInput(
@@ -126,16 +126,16 @@ public class Alloy : MetalMaterial
 
             dustFusingRecipeBuilder.BuildAndRegister();
 
-            var ingotSmeltingRecipeBuilder = new RecipeBuilder(RecipeType.Fusing)
+            var ingotSmeltingRecipeBuilder = new RecipeBuilder(RecipeType.ArcFusing)
                 .NamePatterned("<output> parallel ingot <verb>")
                 .AddOutput(ingot.Stack(this.Components.Sum(x => x.Amount)))
 
-                // Assume smelting takes 1 second per 500 kg/m³ of material processed
-                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 500))
+                // Assume smelting takes 1 second per 10,000 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 10_000))
                 
                 // Require 5 units of fusing gas per ingot produced
                 .AddInput(fusingGas * (5 * this.Components.Sum(x => x.Amount)))
-                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint));
+                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint * 0.9f));
             
             foreach (AlloyComponent component in this.Components)
             {
@@ -152,8 +152,8 @@ public class Alloy : MetalMaterial
                 .NamePatterned("<output> fusion <verb>")
                 .AddOutput(moltenAlloy.Stack(this.Components.Sum(x => x.Amount) * 250))
 
-                // Assume melting takes 1 second per 200 kg/m³ of material processed
-                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 200))
+                // Assume melting takes 1 second per 2000 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 2000))
                 .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint))
                 .AddInput(fusingGas * (2 * this.Components.Sum(x => x.Amount)));
             
