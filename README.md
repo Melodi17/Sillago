@@ -31,8 +31,8 @@ SillagoEngine.Initialize();
 // This retrieves a item by its name.
 Item aluminium = Items.Get("aluminium_ingot");
 
-// Retrieve a material by its name.
-ItemMaterial aluminiumOre = Items.GetMaterial(Materials.Aluminium, MaterialType.Ore);
+// Retrieve a specific material form, e.g., aluminium ore.
+ItemMaterial aluminiumOre = Items.GetMaterialForm(Materials.Aluminium, MaterialType.Ore);
 
 // This retrieves a recipe by its name.
 Recipe aluminiumRecipe = Recipes.Get("aluminium_powder_smelting_into_aluminium_ingot");

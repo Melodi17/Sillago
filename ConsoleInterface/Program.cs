@@ -113,7 +113,7 @@ class Program
         table.AddColumn("Duration");
         foreach (Recipe recipe in results)
             table.AddRow(
-                recipe.Id, recipe.Name, recipe.Type.ToString(),
+                recipe.Id, recipe.Name, recipe.Type.Noun,
                 $"{recipe.Duration.TotalSeconds:0.##}s");
 
         AnsiConsole.Write(table);
@@ -167,10 +167,10 @@ class Program
         IEnumerable<Recipe> consuming = Recipes.Consuming(item);
 
         foreach (Recipe recipe in producing)
-            usageTable.AddRow(recipe.Id, recipe.Name, recipe.Type.ToString(), "Result");
+            usageTable.AddRow(recipe.Id, recipe.Name, recipe.Type.Noun, "Result");
 
         foreach (Recipe recipe in consuming)
-            usageTable.AddRow(recipe.Id, recipe.Name, recipe.Type.ToString(), "Ingredient");
+            usageTable.AddRow(recipe.Id, recipe.Name, recipe.Type.Noun, "Ingredient");
 
         Renderable usageWidget = usageTable.Rows.Count > 0
             ? usageTable
@@ -224,7 +224,7 @@ class Program
 
         Panel panel = new(
             new Rows(
-                new Markup($"[bold]Type:[/] {recipe.Type}"),
+                new Markup($"[bold]Type:[/] {recipe.Type.Noun}"),
                 new Markup($"[bold]Duration:[/] {recipe.Duration.TotalSeconds:0.##} seconds"),
                 new Markup("[bold]Inputs:[/]"),
                 inputsTable,

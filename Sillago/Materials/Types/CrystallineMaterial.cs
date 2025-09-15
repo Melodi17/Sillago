@@ -3,6 +3,7 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Recipes;
 
 public class CrystallineMaterial : PowderMaterial
 {
@@ -19,7 +20,12 @@ public class CrystallineMaterial : PowderMaterial
         yield return crystal;
 
         yield return this.Deferred(() =>
-            crystal.MaceratesInto([Items.GetMaterial(this, MaterialType.Powder).Stack(4)]));
+            new RecipeBuilder(RecipeType.Macerating)
+                .NamePatterned($"<input> <verb>")
+                .AddInput(crystal.Stack(2))
+                .AddOutput(new ItemMaterial(this, MaterialType.Powder).Stack(5 * 3))
+                .SetDuration(TimeSpan.FromSeconds(2))
+                .BuildAndRegister());
 
         if (this.Is(MaterialFlags.Ore))
             yield return new ItemMaterial(this, MaterialType.Ore);

@@ -15,4 +15,8 @@ public enum MaterialType
     Gas,
     Ice,
     Liquid,
+    HotIngot,
+    FinePowder,
+    Nugget,
+    FineWire
 }

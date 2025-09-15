@@ -3,6 +3,7 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Recipes;
 
 public class BioMaterial : Material
 {
@@ -64,6 +65,13 @@ public class BioMaterial : Material
 
         if (this.FeedsOn != null)
             yield return this.Deferred(() =>
-                culture.Incubates(this.MinTemp, this.MaxTemp, this.FeedsOn));
+                new RecipeBuilder(RecipeType.Incubating)
+                    .NamePatterned($"<input> <verb>")
+                    .AddInput(culture.Stack())
+                    .AddInput(Items.GetMaterialForm(this.FeedsOn, MaterialType.Liquid).Stack(50))
+                    .AddOutput(culture.Stack(75))
+                    .SetDuration(System.TimeSpan.FromSeconds(10))
+                    .AddRequirement(TemperatureRequirement.Between(this.MinTemp, this.MaxTemp))
+                    .BuildAndRegister());
     }
 }

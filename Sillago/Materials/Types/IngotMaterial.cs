@@ -3,64 +3,171 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Recipes;
 using Utils;
 
 public class IngotMaterial : Material
 {
     public float MeltingPoint;
 
-    public IngotMaterial(string name, int color, VisualSet visualSet, Symbol symbol, MaterialFlags flags, float density, float meltingPoint) : this(name)
+    public IngotMaterial(
+        string name,
+        int color,
+        VisualSet visualSet,
+        Symbol symbol,
+        MaterialFlags flags,
+        float density,
+        float meltingPoint) : this(name)
     {
-        this.Name      = name;
-        this.Color     = color;
+        this.Name = name;
+        this.Color = color;
         this.VisualSet = visualSet;
-        this.Flags     = flags;
-        this.Density   = density;
-        this.Symbol    = symbol;
+        this.Flags = flags;
+        this.Density = density;
+        this.Symbol = symbol;
 
         this.MeltingPoint = meltingPoint;
     }
 
-    protected IngotMaterial(string name) : base(name)
-    {
-    }
+    protected IngotMaterial(string name) : base(name) { }
 
     public override IEnumerator Generate()
     {
+        ItemMaterial ingot = new ItemMaterial(this, MaterialType.Ingot);
+        ItemMaterial finePowder = new ItemMaterial(this, MaterialType.FinePowder);
         ItemMaterial powder = new ItemMaterial(this, MaterialType.Powder);
-        ItemMaterial ingot = new ItemMaterial(this,  MaterialType.Ingot);
-        ItemMaterial rod = new ItemMaterial(this,    MaterialType.Rod);
+        ItemMaterial rod = new ItemMaterial(this, MaterialType.Rod);
+        ItemMaterial nugget = new ItemMaterial(this, MaterialType.Nugget);
+        ItemMaterial fluid = new ItemMaterial(this, MaterialType.Liquid);
 
-        yield return powder;
         yield return ingot;
+        yield return finePowder;
+        yield return powder;
         yield return rod;
+        yield return nugget;
+        yield return fluid;
 
-        powder.SmeltsInto(ingot, this.MeltingPoint / 3f);
-        ingot.LathesInto(rod);
-        
-        ItemMaterial molten = new(this, MaterialType.Liquid);
-        yield return molten;
-        
-        ingot.ArcSmeltsInto(molten, this.MeltingPoint * 1.5f);
+        yield return new RecipeBuilder(RecipeType.Compacting)
+            .NamePatterned($"<input> <verb>")
+            .AddInput(finePowder.Stack(5))
+            .AddOutput(powder)
+            .SetDuration(TimeSpan.FromSeconds(0.2))
+            .Build();
 
-        if (!this.Is(MaterialFlags.Brittle))
+        yield return new RecipeBuilder(RecipeType.Compacting)
+            .NamePatterned($"<input> <verb>")
+            .AddInput(nugget.Stack(5))
+            .AddOutput(ingot)
+            .SetDuration(TimeSpan.FromSeconds(0.5))
+            .Build();
+
+        yield return new RecipeBuilder(RecipeType.Smelting)
+            .NamePatterned("<input> <verb>")
+            .AddInput(powder.Stack(1))
+            .AddOutput(ingot)
+            .SetDuration(TimeSpan.FromSeconds(0.5))
+            .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint * 0.9f))
+            .Build();
+
+        yield return new RecipeBuilder(RecipeType.Lathing)
+            .NamePatterned($"<input> <verb>")
+            .AddInput(ingot.Stack(1))
+            .AddOutput(rod.Stack(2))
+            .SetDuration(TimeSpan.FromSeconds(1))
+            .Build();
+
+        if (!Is(MaterialFlags.Brittle))
         {
             ItemMaterial plate = new ItemMaterial(this, MaterialType.Plate);
             yield return plate;
-
-            ingot.PressesInto(plate);
+            
+            yield return new RecipeBuilder(RecipeType.Pressing)
+                .NamePatterned($"<input> <verb>")
+                .AddInput(ingot.Stack(1))
+                .AddOutput(plate.Stack(1))
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Build();
         }
 
-        if (this.Is(MaterialFlags.ElectricallyConductive))
+        if (Is(MaterialFlags.Ductile))
         {
-            yield return new ItemMaterial(this, MaterialType.Wire);
-            yield return new ItemMaterial(this, MaterialType.Cable);
+            var coil = new ItemMaterial(this, MaterialType.Coil);
+
+            yield return coil;
+            
+            yield return new RecipeBuilder(RecipeType.Wiremilling)
+                .NamePatterned($"<input> <verb>")
+                .AddInput(rod.Stack(2))
+                .AddOutput(coil.Stack(1))
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Build();
         }
 
-        if (this.Is(MaterialFlags.Ductile))
-            yield return new ItemMaterial(this, MaterialType.Coil);
+        if (Is(MaterialFlags.ElectricallyConductive))
+        {
+            var wire = new ItemMaterial(this, MaterialType.Wire);
+            var fineWire = new ItemMaterial(this, MaterialType.FineWire);
+            var cable = new ItemMaterial(this, MaterialType.Cable);
+            
+            yield return wire;
+            yield return fineWire;
+            yield return cable;
 
-        if (this.Is(MaterialFlags.Ore))
-            yield return new ItemMaterial(this, MaterialType.Ore);
+            yield return new RecipeBuilder(RecipeType.Wiremilling)
+                .NamePatterned($"<input> <verb>")
+                .AddInput(rod.Stack(1))
+                .AddOutput(wire.Stack(2))
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Build();
+
+            yield return new RecipeBuilder(RecipeType.Wiremilling)
+                .NamePatterned($"<input> <verb>")
+                .AddInput(rod.Stack(1))
+                .AddOutput(fineWire.Stack(4))
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Build();
+            
+            // Direct rod -> fine wire
+            yield return new RecipeBuilder(RecipeType.Wiremilling)
+                .NamePatterned($"<input> <verb>")
+                .AddInput(ingot.Stack(1))
+                .AddOutput(fineWire.Stack(8))
+                .SetDuration(TimeSpan.FromSeconds(2))
+                .Build();
+
+            yield return Deferred(() =>
+            {
+                var coating =
+                    RecipeIngredient.Of(
+                        Items.GetMaterialForm(Materials.Rubber, MaterialType.Liquid).Stack(50));
+
+                new RecipeBuilder(RecipeType.ChemicalBathing)
+                    .NamePatterned($"<input> <verb>")
+                    .AddInput(wire.Stack(1))
+                    .AddInput(coating)
+                    .AddOutput(cable.Stack(1))
+                    .SetDuration(TimeSpan.FromSeconds(5))
+                    .BuildAndRegister();
+            });
+        }
+
+        if (this is not MetalMaterial)
+        {
+            yield return new RecipeBuilder(RecipeType.Smelting)
+                .NamePatterned("<input> <verb>")
+                .AddInput(ingot.Stack(1))
+                .AddOutput(fluid.Stack(250))
+                .SetDuration(TimeSpan.FromSeconds(2))
+                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint))
+                .Build();
+            
+            yield return new RecipeBuilder(RecipeType.Casting)
+                .NamePatterned("<input> <verb>")
+                .AddInput(fluid.Stack(250))
+                .AddOutput(ingot.Stack(1))
+                .SetDuration(TimeSpan.FromSeconds(2))
+                .AddRequirement(MoldRequirement.Of(MaterialType.Ingot))
+                .Build();
+        }
     }
 }

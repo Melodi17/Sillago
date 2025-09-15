@@ -11,7 +11,7 @@ public abstract class Material
     /// Uses a 0xRRGGBB format.
     /// </summary>
     public int Color;
-    
+
     /// <summary>
     /// The density of the material in kilograms per cubic meter (kg/m³).
     /// </summary>
@@ -19,25 +19,25 @@ public abstract class Material
 
     // public ConductionProperties ConductionProperties;
     // public FluidHoldingProperties FluidHoldingProperties;
-    
+
     public string Name;
     public Symbol Symbol { get; set; }
-    
+
     /// <summary>
     /// Flags that define the properties and behaviors of the material.
     /// </summary>
     public MaterialFlags Flags { get; set; }
-    
+
     /// <summary>
     /// Visual set for rendering the material in different forms.
     /// </summary>
     public VisualSet VisualSet { get; set; }
-    
+
     /// <summary>
     /// Form names for different material states, e.g., Powder, Ingot, Liquid, etc.
     /// </summary>
     public Dictionary<MaterialType, string> FormNames;
-    
+
     public Material(string name)
     {
         this.FormNames = new()
@@ -55,18 +55,22 @@ public abstract class Material
             { MaterialType.Ore, $"{name} Ore" },
             { MaterialType.Crystal, $"{name} Crystal" },
             { MaterialType.Culture, $"Culture of {name}" },
+            { MaterialType.HotIngot, $"Hot {name} Ingot" },
+            { MaterialType.FinePowder, $"Fine {name} Powder" },
+            { MaterialType.Nugget, $"{name} Nugget" },
+            { MaterialType.FineWire, $"Fine {name} Wire" }
         };
     }
 
     public Material OverrideFormName(MaterialType type, string name)
-    {
-        if (this.FormNames.ContainsKey(type))
-            this.FormNames[type] = name;
-        else
-            throw new ArgumentException($"Material type {type} not found in {this.Name} forms.");
+        {
+            if (this.FormNames.ContainsKey(type))
+                this.FormNames[type] = name;
+            else
+                throw new ArgumentException($"Material type {type} not found in {this.Name} forms.");
 
-        return this;
-    }
+            return this;
+        }
 
     public abstract IEnumerator Generate();
 
@@ -84,6 +88,5 @@ public abstract class Material
         return sb;
     }
 
-    public static AlloyComponent operator *(Material material, int amount)
-        => new AlloyComponent(material, amount);
+    public static AlloyComponent operator *(Material material, int amount) => new AlloyComponent(material, amount);
 }

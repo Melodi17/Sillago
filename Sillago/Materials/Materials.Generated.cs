@@ -145,7 +145,8 @@ public partial class Materials
         new Compound(Element.C * 70, Element.H * 100),
         MaterialFlags.Flammable | MaterialFlags.Viscous,
         density: 1050f,
-        meltingPoint: 120f);
+        meltingPoint: 120f)
+            .OverrideFormName(MaterialType.Ingot, "Asphalt Brick");
         
     public static Material Platinum = new MetalMaterial(
         "Platinum",
@@ -155,6 +156,24 @@ public partial class Materials
         MaterialFlags.Ore | MaterialFlags.CorrosionResistant | MaterialFlags.ThermallyConductive | MaterialFlags.ElectricallyConductive | MaterialFlags.Ductile,
         density: 21450f,
         meltingPoint: 1768f);
+        
+    public static Material Polystyrene = new IngotMaterial(
+        "Polystyrene",
+        0xFF9999,
+        VisualSet.Dull,
+        new Compound(Element.C * 8, Element.H * 8).Polymer(),
+        MaterialFlags.ThermallyInsulating,
+        density: 1050f,
+        meltingPoint: 90f);
+        
+    public static Material Polyethylene = new IngotMaterial(
+        "Polyethylene",
+        0x77AA99,
+        VisualSet.Dull,
+        new Compound(Element.C * 2, Element.H * 4).Polymer(),
+        MaterialFlags.ThermallyInsulating,
+        density: 950f,
+        meltingPoint: 300f);
         
     public static Material Sulphur = new CrystallineMaterial(
         "Sulphur",
@@ -339,16 +358,6 @@ public partial class Materials
         freezingPoint: -169.2f,
         vaporisationPoint: -103.7f);
     
-    public static Material Polyethylene = new FluidMaterial(
-        "Polyethylene",
-        0x77AA99,
-        VisualSet.Dull,
-        new Compound(Element.C * 2, Element.H * 4).Polymer(),
-        MaterialFlags.ThermallyInsulating,
-        density: 950f,
-        freezingPoint: -125f,
-        vaporisationPoint: 300f);
-    
     public static Material Propylene = new FluidMaterial(
         "Propylene",
         0x88AAFF,
@@ -418,16 +427,6 @@ public partial class Materials
         density: 909f,
         freezingPoint: -30.6f,
         vaporisationPoint: 145f);
-    
-    public static Material Polystyrene = new FluidMaterial(
-        "Polystyrene",
-        0xFF9999,
-        VisualSet.Dull,
-        new Compound(Element.C * 8, Element.H * 8).Polymer(),
-        MaterialFlags.ThermallyInsulating,
-        density: 1050f,
-        freezingPoint: 90f,
-        vaporisationPoint: 350f);
     
     public static Material SulphurDioxide = new FluidMaterial(
         "Sulphur Dioxide",

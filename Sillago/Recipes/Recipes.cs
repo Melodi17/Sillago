@@ -47,7 +47,7 @@ public static class Recipes
     /// </summary>
     public static IEnumerable<Recipe> OfType(RecipeType type)
     {
-        return Recipes.Entries.Where(x => x.Type == type);
+        return Recipes.Entries.Where(x => x.Type.Equals(type));
     }
     
     /// <summary>

@@ -12,15 +12,15 @@ public class MyMachine : IMachine, ITemperatureCapability
     public string Status { get; private set; } = "Idle";
     public float? Progress { get; private set; } = null;
     public float Temperature { get; private set; }
-    
+
     public void Tick(float deltaTime)
     {
         if (this.Progress >= 1f)
-            FinishProcessing();
+            this.Status = FinishProcessing();
         else if (this.Progress != null)
-            UpdateProgress(deltaTime);
-        else 
-            Process();
+            this.Status = UpdateProgress(deltaTime);
+        else
+            this.Status = Process();
     }
 
     public string Process()
@@ -30,45 +30,49 @@ public class MyMachine : IMachine, ITemperatureCapability
 
         if (!CurrentRecipe.AreRequirementsMet(this))
             return "Requirements not met.";
-        
+
         if (!CurrentRecipe.AreInputsAvailable(this.Input))
             return "Not enough input items.";
-        
+
         CurrentRecipe.ConsumeInputs(this.Input);
         Progress = 0f;
         return "Working...";
     }
 
-    private void FinishProcessing()
+    private string FinishProcessing()
     {
         if (this.CurrentRecipe == null)
             throw new InvalidOperationException("No recipe set.");
-        
+
         if (!CurrentRecipe.CanProduceOutputs(this.Output))
         {
-            Status = "Output Full";
-            return;
+            return "Output Full";
         }
-        
+
         this.Progress = null;
-        this.Status = "Idle";
-        
         CurrentRecipe.ProduceOutputs(this.Output);
+
+        return "Idle";
     }
 
-    public void UpdateProgress(float delta)
+    public string UpdateProgress(float delta)
     {
         if (this.CurrentRecipe == null || this.Progress == null)
-            return;
+            return "Idle";
 
-        this.Progress += delta / (float)this.CurrentRecipe.Duration.TotalSeconds;
+        if (!this.CurrentRecipe.AreRequirementsMet(this))
+            return "Requirements not met.";
+
+        this.Progress += delta / (float) this.CurrentRecipe.Duration.TotalSeconds;
+
+        return "Working...";
     }
-    
+
     public void SetTemperature(float temperature)
     {
         this.Temperature = temperature;
     }
-    
+
     public void SetRecipe(Recipe recipe)
     {
         this.CurrentRecipe = recipe;

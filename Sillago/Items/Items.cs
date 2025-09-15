@@ -46,7 +46,7 @@ public static class Items
     /// <summary>
     /// Retrieves a specific item material based on the given material and material type/form.
     /// </summary>
-    public static ItemMaterial GetMaterial(Material material, MaterialType type)
+    public static ItemMaterial GetMaterialForm(Material material, MaterialType type)
     {
         string itemId = Identifier.Create($"{material.Name}_{type}");
         if (Items._entries.TryGetValue(itemId, out Item? item) && item is ItemMaterial itemMaterial)
@@ -59,7 +59,7 @@ public static class Items
     /// Tries to retrieve a specific item material based on the given material and material type/form.
     /// If not found, returns null.
     /// </summary>
-    public static ItemMaterial? TryGetMaterial(Material material, MaterialType type)
+    public static ItemMaterial? TryGetMaterialForm(Material material, MaterialType type)
     {
         string itemId = Identifier.Create($"{material.Name}_{type}");
         if (Items._entries.TryGetValue(itemId, out Item? item) && item is ItemMaterial itemMaterial)

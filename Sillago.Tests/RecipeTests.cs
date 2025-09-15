@@ -12,7 +12,7 @@ public class RecipeTests
         Recipe recipe = new(
             "dingle",
             "dingle",
-            0,
+            new RecipeType("noun", "verb", "machine"),
             [],
             [],
             requirements);
@@ -64,7 +64,7 @@ public class RecipeTests
         Recipe recipe = new(
             "test_id",
             "Test Recipe",
-            0,
+            new RecipeType("test_noun", "test_verb", "test_machine"),
             [itemInput],
             [itemOutput],
             [req1, req2],

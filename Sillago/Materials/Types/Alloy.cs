@@ -4,6 +4,7 @@ using System.Text;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Recipes;
 using Utils;
 
 public class Alloy : MetalMaterial
@@ -14,7 +15,9 @@ public class Alloy : MetalMaterial
     {
         this.Components = components;
         this.Name = name;
-        this.Symbol = new Compound(name, components.Select(x => new CompoundComponent(x.Value.Symbol, x.Amount)).ToArray());
+        this.Symbol = new Compound(
+            name,
+            components.Select(x => new CompoundComponent(x.Value.Symbol, x.Amount)).ToArray());
 
         // split int color into ARGB components, then perform weighted sum
         this.Color = components.WeightedColorwiseSum(x => x.Amount, x => x.Value.Color);
@@ -83,40 +86,82 @@ public class Alloy : MetalMaterial
     {
         yield return base.Generate();
 
-        yield return this.Deferred(() => Items
-            .GetMaterial(this, MaterialType.Powder)
-            .MixesFrom(
-                this
-                    .Components
-                    .Select(x => Items
-                        .GetMaterial(x.Value, MaterialType.Powder)
-                        .Stack(x.Amount))
-                    .ToList(),
-                this.Components.Sum(x => x.Amount)));
+        yield return this.Deferred(() =>
+        {
+            var ingot = Items.GetMaterialForm(this, MaterialType.Ingot);
+            var powder = Items.GetMaterialForm(this, MaterialType.Powder);
+            var moltenAlloy = Items.GetMaterialForm(this, MaterialType.Liquid);
+            
+            RecipeIngredient fusingGas = RecipeIngredient.AnyOf([
+                // Items.GetMaterialForm(Materials.Argon, MaterialType.Gas).Stack(1),
+                // Items.GetMaterialForm(Materials.Helium, MaterialType.Gas).Stack(5),
+                Items.GetMaterialForm(Materials.Nitrogen, MaterialType.Gas).Stack(10),
+                Items.GetMaterialForm(Materials.Hydrogen, MaterialType.Gas).Stack(20),
+            ]);
 
-        yield return this.Deferred(() => Items
-            .GetMaterial(this, MaterialType.Ingot)
-            .FusesFrom(
-                this
-                    .Components
-                    .Select(x =>
-                        (Items.TryGetMaterial(x.Value, MaterialType.Ingot)
-                         ?? Items.GetMaterial(x.Value, MaterialType.Powder))
-                        .Stack(x.Amount))
-                    .ToList(),
-                this.MeltingPoint / 3f,
-                this.Components.Sum(x => x.Amount)));
+            var mixingRecipeBuilder = new RecipeBuilder(RecipeType.Mixing)
+                .NamePatterned($"<output> alloy <verb>")
+                .AddOutput(powder.Stack(this.Components.Sum(x => x.Amount)))
 
-        yield return this.Deferred(() => Items
-            .GetMaterial(this, MaterialType.Ingot)
-            .FusesFrom(
-                this
-                    .Components
-                    .Select(x => Items
-                        .GetMaterial(x.Value, MaterialType.Powder)
-                        .Stack(x.Amount))
-                    .ToList(),
-                this.MeltingPoint / 3f,
-                this.Components.Sum(x => x.Amount)));
+                // Assume mixing takes 1 second per 2000 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 2000));
+
+            foreach (AlloyComponent component in this.Components)
+                mixingRecipeBuilder.AddInput(
+                    Items.GetMaterialForm(component.Value, MaterialType.Powder).Stack(component.Amount));
+
+            mixingRecipeBuilder.BuildAndRegister();
+
+            var dustFusingRecipeBuilder = new RecipeBuilder(RecipeType.ArcFusing)
+                .NamePatterned("<output> direct dust <verb>")
+                .AddOutput(ingot.Stack(this.Components.Sum(x => x.Amount)))
+
+                // Assume arc fusing takes 1 second per 1000 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 1000))
+                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint * 0.9f));
+
+            foreach (AlloyComponent component in this.Components)
+                dustFusingRecipeBuilder.AddInput(
+                    Items.GetMaterialForm(component.Value, MaterialType.Powder).Stack(component.Amount));
+
+            dustFusingRecipeBuilder.BuildAndRegister();
+
+            var ingotSmeltingRecipeBuilder = new RecipeBuilder(RecipeType.Fusing)
+                .NamePatterned("<output> parallel ingot <verb>")
+                .AddOutput(ingot.Stack(this.Components.Sum(x => x.Amount)))
+
+                // Assume smelting takes 1 second per 500 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 500))
+                
+                // Require 5 units of fusing gas per ingot produced
+                .AddInput(fusingGas * (5 * this.Components.Sum(x => x.Amount)))
+                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint));
+            
+            foreach (AlloyComponent component in this.Components)
+            {
+                ItemMaterial form = Items.TryGetMaterialForm(component.Value, MaterialType.Ingot) ??
+                                   Items.GetMaterialForm(component.Value, MaterialType.Powder);
+                
+                ingotSmeltingRecipeBuilder.AddInput(
+                    form.Stack(component.Amount));
+            }
+            
+            ingotSmeltingRecipeBuilder.BuildAndRegister();
+            
+            var moltenAlloyRecipeBuilder = new RecipeBuilder(RecipeType.AlloyReacting)
+                .NamePatterned("<output> fusion <verb>")
+                .AddOutput(moltenAlloy.Stack(this.Components.Sum(x => x.Amount) * 250))
+
+                // Assume melting takes 1 second per 200 kg/m³ of material processed
+                .SetDuration(TimeSpan.FromSeconds(this.Components.Sum(x => x.Value.Density * x.Amount) / 200))
+                .AddRequirement(TemperatureRequirement.Above(this.MeltingPoint))
+                .AddInput(fusingGas * (2 * this.Components.Sum(x => x.Amount)));
+            
+            foreach (AlloyComponent component in this.Components)
+                moltenAlloyRecipeBuilder.AddInput(
+                    Items.GetMaterialForm(component.Value, MaterialType.Liquid).Stack(component.Amount * 250));
+            
+            moltenAlloyRecipeBuilder.BuildAndRegister();
+        });
     }
 }

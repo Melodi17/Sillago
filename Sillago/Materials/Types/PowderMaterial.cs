@@ -3,6 +3,7 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Recipes;
 using Utils;
 
 public class PowderMaterial : Material
@@ -35,7 +36,13 @@ public class PowderMaterial : Material
             ItemMaterial liquid = new ItemMaterial(this, MaterialType.Liquid);
             yield return liquid;
 
-            powder.SmeltsInto(liquid, this.LiquificationPoint.Value, outputQuantity: 350);
+            yield return new RecipeBuilder(RecipeType.Liquification)
+                .NamePatterned($"<input> <verb>")
+                .AddInput(powder.Stack())
+                .AddOutput(liquid.Stack(250))
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .AddRequirement(TemperatureRequirement.Above(this.LiquificationPoint.Value))
+                .Build();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 namespace Sillago.Materials.Types;
 
 using Items;
+using Recipes;
 using Utils;
 
 public class FluidMaterial : Material
@@ -38,19 +39,48 @@ public class FluidMaterial : Material
     public override IEnumerator Generate()
     {
         ItemMaterial liquid = new ItemMaterial(this, MaterialType.Liquid);
-        yield return liquid;
-
         ItemMaterial ice = new ItemMaterial(this, MaterialType.Ice);
-        yield return ice;
-
         ItemMaterial gas = new ItemMaterial(this, MaterialType.Gas);
+        
+        yield return liquid;
+        yield return ice;
         yield return gas;
         
-        liquid.FreezesInto(ice, this.FreezingPoint);
-        ice.ThawsInto(liquid, this.FreezingPoint);
+        // liquid -> ice
+        yield return new RecipeBuilder(RecipeType.Freezing)
+            .NamePatterned($"<input> <verb>")
+            .AddInput(liquid.Stack(250))
+            .AddOutput(ice.Stack(250))
+            .SetDuration(TimeSpan.FromSeconds(5))
+            .AddRequirement(TemperatureRequirement.Below(this.FreezingPoint))
+            .Build();
         
-        liquid.VaporisesInto(gas, this.VaporisationPoint);
-        gas.CondensesInto(liquid, this.VaporisationPoint);
+        // ice -> liquid
+        yield return new RecipeBuilder(RecipeType.Thawing)
+            .NamePatterned($"<input> <verb>")
+            .AddInput(ice.Stack(250))
+            .AddOutput(liquid.Stack(250))
+            .SetDuration(TimeSpan.FromSeconds(5))
+            .AddRequirement(TemperatureRequirement.Above(this.FreezingPoint))
+            .Build();
+        
+        // liquid -> gas
+        yield return new RecipeBuilder(RecipeType.Vaporising)
+            .NamePatterned($"<input> <verb>")
+            .AddInput(liquid.Stack(250))
+            .AddOutput(gas.Stack(250))
+            .SetDuration(TimeSpan.FromSeconds(5))
+            .AddRequirement(TemperatureRequirement.Above(this.VaporisationPoint))
+            .Build();
+        
+        // gas -> liquid
+        yield return new RecipeBuilder(RecipeType.Condensing)
+            .NamePatterned($"<input> <verb>")
+            .AddInput(gas.Stack(250))
+            .AddOutput(liquid.Stack(250))
+            .SetDuration(TimeSpan.FromSeconds(5))
+            .AddRequirement(TemperatureRequirement.Below(this.VaporisationPoint))
+            .Build();
     }
     
     private static bool IsAboveRoomTemperature(float temperature)

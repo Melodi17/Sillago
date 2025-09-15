@@ -3,7 +3,7 @@ namespace Sillago.Recipes;
 using System.Text;
 using Items;
 
-public class Recipe
+public class Recipe : IDisposable
 {
     public string Id { get; }
     public string Name { get; }
@@ -31,6 +31,10 @@ public class Recipe
         this.Outputs = outputs;
         this.Requirements = requirements ?? [];
         this.Duration = duration;
+    }
+    public void Dispose()
+    {
+        Console.WriteLine($"Recipe {this.Id} was not registered and is being disposed.");
     }
 
     public string GetInfo()
