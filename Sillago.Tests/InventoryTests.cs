@@ -67,13 +67,11 @@ public class InventoryTests
     }
 
     [Test]
-    public void Add_WithZeroAmount_ReturnsFalse()
+    public void Add_WithZeroAmount_Throws()
     {
-        Inventory inventory = new(1);
-        bool result = inventory.Add(new ItemStack(apple, 0));
-
-        Assert.That(result, Is.False);
-        Assert.That(inventory.Stacks.Count, Is.EqualTo(0));
+        Inventory inventory = new(2);
+        Assert.Throws<ArgumentException>(() => inventory.Add(new ItemStack(apple, 0)));
+        Assert.Throws<ArgumentException>(() => inventory.Add(new ItemStack(apple, -1)));
     }
 
     [Test]

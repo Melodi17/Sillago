@@ -2,15 +2,18 @@ namespace Sillago;
 
 public class ItemStack
 {
-    public int Amount;
     public Item Item;
+    public int Amount { get; set; }
     public ItemStack(Item item, int amount = 1)
     {
-        this.Item   = item;
+        if (amount <= 0)
+            throw new ArgumentException("Amount must be greater than zero.");
+
+        this.Item = item;
         this.Amount = amount;
     }
     public ItemStack Copy() => new(this.Item, this.Amount);
-    
+
     public override string ToString()
     {
         if (this.Item.CountAsVolume)

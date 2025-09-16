@@ -2,43 +2,45 @@ namespace Sillago;
 
 using System.Collections;
 using System.Text;
-using Sillago.Symbols;
+using Symbols;
 
 public abstract class Material
 {
     /// <summary>
     /// Uses a 0xRRGGBB format.
     /// </summary>
-    public int Color;
+    public int Color { get; protected set; }
 
     /// <summary>
     /// The density of the material in kilograms per cubic meter (kg/m³).
     /// </summary>
-    public float Density;
+    public float Density { get; protected set; }
 
     // public ConductionProperties ConductionProperties;
     // public FluidHoldingProperties FluidHoldingProperties;
 
-    public string Name;
-    public Symbol Symbol { get; set; }
+    public string Name { get; private set; }
+    public Symbol Symbol { get; private set; }
 
     /// <summary>
     /// Flags that define the properties and behaviors of the material.
     /// </summary>
-    public MaterialFlags Flags { get; set; }
+    public MaterialFlags Flags { get; protected set; }
 
     /// <summary>
     /// Visual set for rendering the material in different forms.
     /// </summary>
-    public VisualSet VisualSet { get; set; }
+    public VisualSet VisualSet { get; protected set; }
 
     /// <summary>
     /// Form names for different material states, e.g., Powder, Ingot, Liquid, etc.
     /// </summary>
-    public Dictionary<MaterialType, string> FormNames;
+    public Dictionary<MaterialType, string> FormNames { get; }
 
-    public Material(string name)
+    public Material(string name, Symbol symbol)
     {
+        this.Name = name;
+        this.Symbol = symbol;
         this.FormNames = new()
         {
             { MaterialType.Powder, $"{name} Powder" },

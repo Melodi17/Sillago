@@ -1,6 +1,6 @@
 namespace Sillago;
 
-using Sillago.Utils;
+using Utils;
 
 public class ItemMaterial : Item
 {

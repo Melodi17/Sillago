@@ -2,7 +2,7 @@ namespace Sillago;
 
 using System.Diagnostics.CodeAnalysis;
 
-public struct RecipeType
+public struct RecipeType : IEquatable<RecipeType>
 {
     public static RecipeType Smelting = new("Smelting", "Smelting", "Furnace");
     public static RecipeType ArcSmelting = new("Arc Smelting", "Arc Smelting", "Arc Furnace");
@@ -42,5 +42,10 @@ public struct RecipeType
         this.Machinery = machinery;
     }
 
-    public override bool Equals([NotNullWhen(true)] object? obj) => obj is RecipeType type && this.Equals(type);
+    public override string ToString() => this.Noun;
+    public bool Equals(RecipeType other) => this.Noun == other.Noun;
+    public override bool Equals(object? obj) => obj is RecipeType other && this.Equals(other);
+    public override int GetHashCode() => this.Noun.GetHashCode();
+    public static bool operator ==(RecipeType left, RecipeType right) => left.Equals(right);
+    public static bool operator !=(RecipeType left, RecipeType right) => !left.Equals(right);
 }

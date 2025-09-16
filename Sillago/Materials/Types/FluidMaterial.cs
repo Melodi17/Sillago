@@ -2,7 +2,7 @@ namespace Sillago.Types;
 
 using System.Collections;
 using Requirements;
-using Sillago.Symbols;
+using Symbols;
 
 public class FluidMaterial : Material
 {
@@ -10,21 +10,19 @@ public class FluidMaterial : Material
     public float VaporisationPoint;
 
     public FluidMaterial(string name, int color, VisualSet visualSet, Symbol symbol, MaterialFlags flags, float density, float freezingPoint, float vaporisationPoint)
-        : this(name, freezingPoint, vaporisationPoint)
+        : this(name, symbol, freezingPoint, vaporisationPoint)
     {
-        this.Name      = name;
         this.Color     = color;
         this.VisualSet = visualSet;
         this.Flags     = flags;
         this.Density   = density;
-        this.Symbol    = symbol;
 
         this.FreezingPoint     = freezingPoint;
         this.VaporisationPoint = vaporisationPoint;
     }
     
-    protected FluidMaterial(string name, float freezingPoint = 0f, float vaporisationPoint = 100f)
-        : base(name)
+    protected FluidMaterial(string name, Symbol symbol, float freezingPoint = 0f, float vaporisationPoint = 100f)
+        : base(name, symbol)
     {
         if (FluidMaterial.IsAboveRoomTemperature(vaporisationPoint))
             // Liquids that boil above room temperature are usually called liquids

@@ -1,6 +1,6 @@
 namespace Sillago;
 
-using Sillago.Utils;
+using Utils;
 
 /// <summary>
 /// Registry class for managing and accessing all defined items.
@@ -36,7 +36,7 @@ public static class Items
         if (string.IsNullOrEmpty(id))
             throw new ArgumentException("Item ID cannot be null or empty.");
 
-        if (Items._entries.TryGetValue(id, out Item item))
+        if (Items._entries.TryGetValue(id, out Item? item))
             return item;
 
         throw new KeyNotFoundException($"No item found with ID '{id}'.");

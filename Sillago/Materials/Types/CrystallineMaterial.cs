@@ -1,14 +1,14 @@
 namespace Sillago.Types;
 
 using System.Collections;
-using Sillago.Symbols;
+using Symbols;
 
 public class CrystallineMaterial : PowderMaterial
 {
     public CrystallineMaterial(string name, int color, VisualSet visualSet, Element symbol, MaterialFlags flags, float density, float? liquificationPoint = null)
         : base(name, color, visualSet, symbol, flags, density, liquificationPoint) { }
 
-    protected CrystallineMaterial(string name) : base(name) { }
+    protected CrystallineMaterial(string name, Symbol symbol) : base(name, symbol) { }
 
     public override IEnumerator Generate()
     {

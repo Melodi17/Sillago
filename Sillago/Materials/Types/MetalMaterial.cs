@@ -2,7 +2,7 @@ namespace Sillago.Types;
 
 using System.Collections;
 using Requirements;
-using Sillago.Symbols;
+using Symbols;
 
 public class MetalMaterial : IngotMaterial
 {
@@ -22,7 +22,7 @@ public class MetalMaterial : IngotMaterial
         this.OverrideFormName(MaterialType.Liquid, $"Molten {name}");
     }
 
-    protected MetalMaterial(string name) : base(name)
+    protected MetalMaterial(string name, Symbol symbol) : base(name, symbol)
     {
         this.OverrideFormName(MaterialType.Liquid, $"Molten {name}");
     }

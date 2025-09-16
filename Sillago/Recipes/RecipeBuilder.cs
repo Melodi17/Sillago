@@ -1,7 +1,7 @@
 namespace Sillago;
 
 using Requirements;
-using Sillago.Utils;
+using Utils;
 
 public class RecipeBuilder
 {

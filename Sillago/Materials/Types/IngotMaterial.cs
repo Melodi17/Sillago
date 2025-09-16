@@ -2,7 +2,7 @@ namespace Sillago.Types;
 
 using System.Collections;
 using Requirements;
-using Sillago.Symbols;
+using Symbols;
 
 public class IngotMaterial : Material
 {
@@ -15,20 +15,20 @@ public class IngotMaterial : Material
         Symbol symbol,
         MaterialFlags flags,
         float density,
-        float meltingPoint) : this(name)
+        float meltingPoint) : this(name, symbol)
     {
-        this.Name = name;
         this.Color = color;
         this.VisualSet = visualSet;
         this.Flags = flags;
         this.Density = density;
-        this.Symbol = symbol;
 
         this.MeltingPoint = meltingPoint;
     }
-
-    protected IngotMaterial(string name) : base(name) { }
-
+    
+    protected IngotMaterial(string name, Symbol symbol) : base(name, symbol)
+    {
+    }
+    
     public override IEnumerator Generate()
     {
         ItemMaterial ingot = new ItemMaterial(this, MaterialType.Ingot);

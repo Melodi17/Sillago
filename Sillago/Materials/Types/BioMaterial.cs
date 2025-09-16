@@ -2,7 +2,7 @@ namespace Sillago.Types;
 
 using System.Collections;
 using Requirements;
-using Sillago.Symbols;
+using Symbols;
 
 public class BioMaterial : Material
 {
@@ -17,16 +17,13 @@ public class BioMaterial : Material
         float minTemp,
         float maxTemp,
         Material feedsOn)
-        : base(name)
+        : base(name, BioMaterial.CreateMicrobialCulture(variation))
     {
-        this.Name = name;
-        Compound culture = BioMaterial.CreateMicrobialCulture(variation);
-        this.Symbol = culture;
         this.Color = BioMaterial.CreateColor(variation);
         this.VisualSet = VisualSet.Default;
         this.Flags = flags;
 
-        this.Density = 1000f; // Arbitrary density for microbial culture
+        this.Density = 1000f;
         this.FeedsOn = feedsOn;
 
         this.MinTemp = minTemp;
@@ -69,7 +66,7 @@ public class BioMaterial : Material
                     .AddInput(culture.Stack())
                     .AddInput(Items.GetMaterialForm(this.FeedsOn, MaterialType.Liquid).Stack(50))
                     .AddOutput(culture.Stack(75))
-                    .SetDuration(System.TimeSpan.FromSeconds(10))
+                    .SetDuration(TimeSpan.FromSeconds(10))
                     .AddRequirement(TemperatureRequirement.Between(this.MinTemp, this.MaxTemp))
                     .BuildAndRegister());
     }

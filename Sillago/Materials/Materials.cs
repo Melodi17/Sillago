@@ -1,7 +1,7 @@
 namespace Sillago;
 
 using System.Collections;
-using Sillago.Utils;
+using Utils;
 
 public partial class Materials
 {

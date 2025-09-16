@@ -3,20 +3,16 @@ namespace Sillago.Types;
 using System.Collections;
 using System.Text;
 using Requirements;
-using Sillago.Symbols;
-using Sillago.Utils;
+using Symbols;
+using Utils;
 
 public class Alloy : MetalMaterial
 {
     public AlloyComponent[] Components;
     public Alloy(string name, params AlloyComponent[] components)
-        : base(name)
+        : base(name, Alloy.CreateAlloyCompound(name, components))
     {
         this.Components = components;
-        this.Name = name;
-        this.Symbol = new Compound(
-            name,
-            components.Select(x => new CompoundComponent(x.Value.Symbol, x.Amount)).ToArray());
 
         // split int color into ARGB components, then perform weighted sum
         this.Color = components.WeightedColorwiseSum(x => x.Amount, x => x.Value.Color);
@@ -28,6 +24,12 @@ public class Alloy : MetalMaterial
             .Where(x => x.Value is IngotMaterial)
             .WeightedSum(x => x.Amount, x => (x.Value as IngotMaterial)!.MeltingPoint);
         this.Density = components.WeightedSum(x => x.Amount, x => x.Value.Density);
+    }
+    private static Compound CreateAlloyCompound(string name, AlloyComponent[] components)
+    {
+        return new Compound(
+            name,
+            components.Select(x => new CompoundComponent(x.Value.Symbol, x.Amount)).ToArray());
     }
 
     private static MaterialFlags CalculateFlags(AlloyComponent[] components)

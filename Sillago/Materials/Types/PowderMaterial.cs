@@ -2,24 +2,22 @@ namespace Sillago.Types;
 
 using System.Collections;
 using Requirements;
-using Sillago.Symbols;
+using Symbols;
 
 public class PowderMaterial : Material
 {
     public float? LiquificationPoint;
     public PowderMaterial(string name, int color, VisualSet visualSet, Symbol symbol, MaterialFlags flags, float density, float? liquificationPoint = null)
-        : this(name)
+        : this(name, symbol)
     {
-        this.Name               = name;
         this.Color              = color;
         this.VisualSet          = visualSet;
         this.Flags              = flags;
         this.Density            = density;
-        this.Symbol             = symbol;
         this.LiquificationPoint = liquificationPoint;
     }
 
-    protected PowderMaterial(string name) : base(name)
+    protected PowderMaterial(string name, Symbol symbol) : base(name, symbol)
     {
         this.OverrideFormName(MaterialType.Liquid, $"Liquified {name}");
     }
