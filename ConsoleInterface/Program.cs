@@ -1,5 +1,6 @@
 ﻿namespace ConsoleInterface;
 
+using System.Text;
 using Sillago;
 using Sillago.Utils;
 using Spectre.Console;
@@ -219,8 +220,23 @@ class Program
             ? string.Join("\n", recipe.Requirements.Select(x => x.GetInfo()))
             : "[grey]None[/]";
 
+        StringBuilder recipeSymbol = new();
+        recipeSymbol.Append(string.Join(" + ", recipe.Inputs
+            .Select(i => i.Options.First())
+            .Where(i => i.Item is ItemMaterial)
+            .Select(i => (i.Amount, (i.Item as ItemMaterial)!.Material.Symbol))
+            .Select(i => new AsciiSymbolFormatter().Format(i.Symbol * i.Amount))));
+        
+        recipeSymbol.Append(" → ");
+        
+        recipeSymbol.Append(string.Join(" + ", recipe.Outputs
+            .Where(i => i.Item is ItemMaterial)
+            .Select(i => (i.MinResult, (i.Item as ItemMaterial)!.Material.Symbol))
+            .Select(i => new AsciiSymbolFormatter().Format(i.Symbol))));
+
         Panel panel = new(
             new Rows(
+                new Markup($"{recipeSymbol}"),
                 new Markup($"[bold]Type:[/] {recipe.Type.Noun}"),
                 new Markup($"[bold]Duration:[/] {recipe.Duration.TotalSeconds:0.##} seconds"),
                 new Markup("[bold]Inputs:[/]"),

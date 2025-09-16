@@ -11,15 +11,22 @@ public class DefaultSymbolFormatter : SymbolFormatter
         StringBuilder builder = new();
 
         foreach (CompoundComponent component in compound.Components)
-        {
-            if (component.Value is Compound)
-                builder.Append($"({this.Format(component.Value)})");
-            else
-                builder.Append(this.Format(component.Value));
+            builder.Append(this.Format(component));
 
-            if (component.Amount > 1)
-                builder.Append($"{component.Amount}");
-        }
+        return builder.ToString();
+    }
+    
+    protected override string Format(CompoundComponent component)
+    {
+        StringBuilder builder = new();
+        
+        if (component.Value is Compound)
+            builder.Append($"({this.Format(component.Value)})");
+        else
+            builder.Append(this.Format(component.Value));
+
+        if (component.Amount > 1)
+            builder.Append($"{component.Amount}");
 
         return builder.ToString();
     }

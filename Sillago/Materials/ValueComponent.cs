@@ -2,30 +2,31 @@ namespace Sillago;
 
 using Symbols;
 
-public class ValueComponent<T>
+public interface IValueComponent<T>
 {
-    public int Amount;
-    public T   Value;
+    public int Amount { get; set; }
+    public T   Value { get; set; }
+}
 
-    public ValueComponent(T value, int amount = 1)
+public class AlloyComponent : IValueComponent<Material>
+{
+    public Material Value { get; set; }
+    public int Amount { get; set; }
+    
+    public AlloyComponent(Material value, int amount = 1)
     {
-        this.Value  = value;
+        this.Value = value;
         this.Amount = amount;
     }
 }
 
-public class CompoundComponent : ValueComponent<Symbol>
+public class CompoundComponent : Symbol, IValueComponent<Symbol>
 {
-    public CompoundComponent(Symbol value, int amount = 1) : base(value, amount)
+    public Symbol Value { get; set; }
+    public int Amount { get; set; }
+    public CompoundComponent(Symbol value, int amount = 1)
     {
-        
-    }
-}
-
-public class AlloyComponent : ValueComponent<Material>
-{
-    public AlloyComponent(Material value, int amount = 1) : base(value, amount)
-    {
-        
+        this.Value = value;
+        this.Amount = amount;
     }
 }

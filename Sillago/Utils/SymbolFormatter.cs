@@ -8,11 +8,13 @@ public abstract class SymbolFormatter
     {
         Element e => this.Format(e),
         Compound c => this.Format(c),
+        CompoundComponent cc => this.Format(cc),
         Polymer p => this.Format(p),
         _ => throw new NotSupportedException($"Symbol type {symbol.GetType().Name} is not supported.")
     };
     
     protected abstract string Format(Element element);
     protected abstract string Format(Compound compound);
+    protected abstract string Format(CompoundComponent component);
     protected abstract string Format(Polymer polymer);
 }

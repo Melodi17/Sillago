@@ -171,6 +171,4 @@ public class Element : Symbol
         return Element.Elements.FirstOrDefault(e => e.Symbol.Equals(
             symbol, StringComparison.OrdinalIgnoreCase));
     }
-
-    public static CompoundComponent operator *(Element element, int amount) => new(element, amount);
 }

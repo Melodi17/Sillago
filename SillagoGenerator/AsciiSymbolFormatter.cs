@@ -14,10 +14,8 @@ public class CodeSymbolFormatter : SymbolFormatter
         for (int i = 0; i < compound.Components.Length; i++)
         {
             CompoundComponent component = compound.Components[i];
-            builder.Append(this.Format(component.Value));
-            
-            builder.Append($" * {component.Amount}");
-            
+            builder.Append(this.Format(component));
+
             if (i < compound.Components.Length - 1)
                 builder.Append(", ");
         }
@@ -26,6 +24,10 @@ public class CodeSymbolFormatter : SymbolFormatter
         return builder.ToString();
     }
 
-    protected override string Format(Polymer polymer)
-        => $"{this.Format(polymer.Source)}.Polymer()";
+    protected override string Format(CompoundComponent component)
+    {
+        return $"{this.Format(component.Value)} * {component.Amount}";
+    }
+
+    protected override string Format(Polymer polymer) => $"{this.Format(polymer.Source)}.Polymer()";
 }
