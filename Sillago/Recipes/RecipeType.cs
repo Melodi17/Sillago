@@ -43,4 +43,6 @@ public struct RecipeType
     }
 
     public override bool Equals([NotNullWhen(true)] object? obj) => obj is RecipeType type && this.Equals(type);
+    
+    public override int GetHashCode() => HashCode.Combine(Noun, Verb, Machinery);
 }

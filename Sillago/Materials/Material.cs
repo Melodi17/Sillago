@@ -39,6 +39,8 @@ public abstract class Material
 
     public Material(string name)
     {
+        this.Name = name;
+        this.Symbol = new Symbol(); // Initialize with default Symbol
         this.FormNames = new()
         {
             { MaterialType.Powder, $"{name} Powder" },

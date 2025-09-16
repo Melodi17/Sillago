@@ -241,7 +241,7 @@ class Program
     private static string GenerateSafeName(string name)
     {
         // remove dashes, uppercamelcase
-        string[] parts = name.Split([' ', '-'], StringSplitOptions.RemoveEmptyEntries);
+        string[] parts = name.Split(new char[] { ' ', '-' }, StringSplitOptions.RemoveEmptyEntries);
         return string.Concat(parts.Select(part => char.ToUpper(part[0]) + part[1..].ToLower()));
     }
 
