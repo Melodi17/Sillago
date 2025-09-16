@@ -1,6 +1,6 @@
-namespace Sillago.Materials;
+namespace Sillago;
 
-using Utils;
+using Sillago.Symbols;
 
 public class ValueComponent<T>
 {

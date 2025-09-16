@@ -1,6 +1,4 @@
-namespace Sillago.Recipes;
-
-using Materials;
+namespace Sillago.Capabilities;
 
 public interface IMoldCapability : ICapability
 {

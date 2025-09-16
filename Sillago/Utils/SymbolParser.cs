@@ -1,6 +1,6 @@
 namespace Sillago.Utils;
 
-using Materials;
+using Symbols;
 
 public class SymbolParser
 {

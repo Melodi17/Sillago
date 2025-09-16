@@ -1,4 +1,4 @@
-namespace Sillago.Items;
+namespace Sillago;
 
 using System.Collections;
 

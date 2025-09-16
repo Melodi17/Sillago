@@ -1,6 +1,4 @@
-namespace Sillago.Recipes;
-
-using Items;
+namespace Sillago;
 
 /// <summary>
 /// Registry class for managing and accessing all defined recipes.

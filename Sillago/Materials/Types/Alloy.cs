@@ -1,11 +1,10 @@
+namespace Sillago.Types;
+
 using System.Collections;
 using System.Text;
-
-namespace Sillago.Materials.Types;
-
-using Items;
-using Recipes;
-using Utils;
+using Requirements;
+using Sillago.Symbols;
+using Sillago.Utils;
 
 public class Alloy : MetalMaterial
 {

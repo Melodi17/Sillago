@@ -1,8 +1,6 @@
-namespace Sillago.Items;
+namespace Sillago;
 
-using Materials;
-using Recipes;
-using Utils;
+using Sillago.Utils;
 
 public class ItemMaterial : Item
 {

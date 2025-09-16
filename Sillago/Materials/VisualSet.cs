@@ -1,4 +1,4 @@
-namespace Sillago.Materials;
+namespace Sillago;
 
 public enum VisualSet
 {

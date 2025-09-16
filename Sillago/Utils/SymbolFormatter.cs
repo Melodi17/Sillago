@@ -1,7 +1,6 @@
 namespace Sillago.Utils;
 
-using Materials;
-using Materials.Types;
+using Symbols;
 
 public abstract class SymbolFormatter
 {

@@ -1,9 +1,8 @@
+namespace Sillago.Types;
+
 using System.Collections;
-
-namespace Sillago.Materials.Types;
-
-using Items;
-using Recipes;
+using Requirements;
+using Sillago.Symbols;
 
 public class MetalMaterial : IngotMaterial
 {
@@ -35,7 +34,7 @@ public class MetalMaterial : IngotMaterial
         ItemMaterial hotIngot = new ItemMaterial(this, MaterialType.HotIngot);
         yield return hotIngot;
         
-        yield return Deferred(() =>
+        yield return this.Deferred(() =>
         {
             ItemMaterial ingot = Items.GetMaterialForm(this, MaterialType.Ingot);
             ItemMaterial molten = Items.GetMaterialForm(this, MaterialType.Liquid);
@@ -61,7 +60,7 @@ public class MetalMaterial : IngotMaterial
                 .AddInput(hotIngot.Stack())
                 .AddOutput(ingot)
                 .SetDuration(TimeSpan.FromSeconds(5))
-                .AddRequirement(TemperatureRequirement.Below(MOLTEN_FREEZING_TEMPERATURE))
+                .AddRequirement(TemperatureRequirement.Below(MetalMaterial.MOLTEN_FREEZING_TEMPERATURE))
                 .BuildAndRegister();
         });
     }

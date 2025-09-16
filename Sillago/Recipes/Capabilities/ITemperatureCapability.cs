@@ -1,4 +1,4 @@
-namespace Sillago.Recipes;
+namespace Sillago.Capabilities;
 
 /// <summary>
 /// Indicates that the Machine supports temperature control.

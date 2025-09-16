@@ -1,7 +1,7 @@
 namespace Sillago.Utils;
 
 using System.Text;
-using Materials;
+using Symbols;
 
 public class CodeSymbolFormatter : SymbolFormatter
 {

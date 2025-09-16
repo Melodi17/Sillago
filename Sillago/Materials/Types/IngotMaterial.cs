@@ -1,10 +1,8 @@
+namespace Sillago.Types;
+
 using System.Collections;
-
-namespace Sillago.Materials.Types;
-
-using Items;
-using Recipes;
-using Utils;
+using Requirements;
+using Sillago.Symbols;
 
 public class IngotMaterial : Material
 {
@@ -76,7 +74,7 @@ public class IngotMaterial : Material
             .SetDuration(TimeSpan.FromSeconds(1))
             .Build();
 
-        if (!Is(MaterialFlags.Brittle))
+        if (!this.Is(MaterialFlags.Brittle))
         {
             ItemMaterial plate = new ItemMaterial(this, MaterialType.Plate);
             yield return plate;
@@ -89,7 +87,7 @@ public class IngotMaterial : Material
                 .Build();
         }
 
-        if (Is(MaterialFlags.Ductile))
+        if (this.Is(MaterialFlags.Ductile))
         {
             var coil = new ItemMaterial(this, MaterialType.Coil);
 
@@ -103,7 +101,7 @@ public class IngotMaterial : Material
                 .Build();
         }
 
-        if (Is(MaterialFlags.ElectricallyConductive))
+        if (this.Is(MaterialFlags.ElectricallyConductive))
         {
             var wire = new ItemMaterial(this, MaterialType.Wire);
             var fineWire = new ItemMaterial(this, MaterialType.FineWire);
@@ -137,7 +135,7 @@ public class IngotMaterial : Material
                 .SetDuration(TimeSpan.FromSeconds(2))
                 .Build();
 
-            yield return Deferred(() =>
+            yield return this.Deferred(() =>
             {
                 var coating =
                     RecipeIngredient.Of(

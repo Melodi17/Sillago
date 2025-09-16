@@ -1,8 +1,7 @@
 namespace Sillago.Tests;
 
 using Helpers;
-using Items;
-using Recipes;
+using Requirements;
 
 [TestFixture]
 public class RecipeTests

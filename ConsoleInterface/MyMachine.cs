@@ -1,7 +1,7 @@
 namespace ConsoleInterface;
 
-using Sillago.Items;
-using Sillago.Recipes;
+using Sillago;
+using Sillago.Capabilities;
 
 public class MyMachine : IMachine, ITemperatureCapability
 {

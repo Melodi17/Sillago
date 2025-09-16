@@ -1,6 +1,7 @@
-namespace Sillago.Recipes;
+namespace Sillago.Requirements;
 
 using System.Diagnostics;
+using Capabilities;
 
 public class TemperatureRequirement : IRecipeRequirement
 {

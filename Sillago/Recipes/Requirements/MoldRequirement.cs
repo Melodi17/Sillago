@@ -1,6 +1,6 @@
-namespace Sillago.Recipes;
+namespace Sillago.Requirements;
 
-using Materials;
+using Capabilities;
 
 public class MoldRequirement : IRecipeRequirement
 {

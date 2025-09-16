@@ -1,4 +1,4 @@
-namespace Sillago.Recipes;
+namespace Sillago;
 
 using System.Diagnostics.CodeAnalysis;
 

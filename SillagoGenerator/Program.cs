@@ -1,7 +1,7 @@
 ﻿namespace SillagoGenerator;
 
 using System.Text;
-using Sillago.Materials;
+using Sillago.Symbols;
 using Sillago.Utils;
 
 class Program

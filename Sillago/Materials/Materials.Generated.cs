@@ -1,6 +1,7 @@
 // This file is auto-generated. Do not edit manually.
-namespace Sillago.Materials;
+namespace Sillago;
 
+using Sillago.Symbols;
 using Types;
 
 [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]

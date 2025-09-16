@@ -1,8 +1,7 @@
-namespace Sillago.Recipes;
+namespace Sillago;
 
-using Items;
-using Materials;
-using Utils;
+using Requirements;
+using Sillago.Utils;
 
 public class RecipeBuilder
 {
@@ -75,7 +74,7 @@ public class RecipeBuilder
 
     public Recipe Build()
     {
-        string id = CreateId();
+        string id = this.CreateId();
         string? name = this._name?.Invoke();
         TimeSpan? duration = this._duration?.Invoke();
         
@@ -130,8 +129,8 @@ public class RecipeBuilder
         {
             string inputs = string.Join(", ", this._inputs.Select(i => i.Options[0].Item.Name));
             string outputs = string.Join(", ", this._outputs.Select(o => o.Item.Name));
-            string primaryInputName = GetPrimaryInput().Name;
-            string primaryOutputName = GetPrimaryOutput().Name;
+            string primaryInputName = this.GetPrimaryInput().Name;
+            string primaryOutputName = this.GetPrimaryOutput().Name;
             
             return pattern
                 .Replace("<noun>", this.Type.Noun.ToLower())

@@ -1,9 +1,6 @@
 ﻿namespace ConsoleInterface;
 
 using Sillago;
-using Sillago.Items;
-using Sillago.Materials;
-using Sillago.Recipes;
 using Sillago.Utils;
 using Spectre.Console;
 using Spectre.Console.Rendering;

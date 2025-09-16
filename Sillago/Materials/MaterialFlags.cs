@@ -1,4 +1,4 @@
-namespace Sillago.Materials;
+namespace Sillago;
 
 [Flags]
 public enum MaterialFlags : ulong

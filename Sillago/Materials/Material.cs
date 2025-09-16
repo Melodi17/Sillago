@@ -1,9 +1,8 @@
+namespace Sillago;
+
 using System.Collections;
 using System.Text;
-
-namespace Sillago.Materials;
-
-using Utils;
+using Sillago.Symbols;
 
 public abstract class Material
 {

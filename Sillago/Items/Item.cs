@@ -1,6 +1,4 @@
-namespace Sillago.Items;
-
-using Utils;
+namespace Sillago;
 
 public class Item
 {

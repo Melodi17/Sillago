@@ -1,7 +1,7 @@
-namespace Sillago.Recipes;
+namespace Sillago;
 
 using System.Text;
-using Items;
+using Requirements;
 
 public class Recipe : IDisposable
 {

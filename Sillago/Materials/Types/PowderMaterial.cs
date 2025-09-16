@@ -1,10 +1,8 @@
+namespace Sillago.Types;
+
 using System.Collections;
-
-namespace Sillago.Materials.Types;
-
-using Items;
-using Recipes;
-using Utils;
+using Requirements;
+using Sillago.Symbols;
 
 public class PowderMaterial : Material
 {

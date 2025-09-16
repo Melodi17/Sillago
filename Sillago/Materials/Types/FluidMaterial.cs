@@ -1,10 +1,8 @@
+namespace Sillago.Types;
+
 using System.Collections;
-
-namespace Sillago.Materials.Types;
-
-using Items;
-using Recipes;
-using Utils;
+using Requirements;
+using Sillago.Symbols;
 
 public class FluidMaterial : Material
 {
@@ -28,7 +26,7 @@ public class FluidMaterial : Material
     protected FluidMaterial(string name, float freezingPoint = 0f, float vaporisationPoint = 100f)
         : base(name)
     {
-        if (IsAboveRoomTemperature(vaporisationPoint))
+        if (FluidMaterial.IsAboveRoomTemperature(vaporisationPoint))
             // Liquids that boil above room temperature are usually called liquids
             this.OverrideFormName(MaterialType.Liquid, $"{name}");
         else

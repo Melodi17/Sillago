@@ -1,6 +1,4 @@
-namespace Sillago.Items;
-
-using Recipes;
+namespace Sillago;
 
 public class ItemStack
 {

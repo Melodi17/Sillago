@@ -1,7 +1,6 @@
-namespace Sillago.Items;
+namespace Sillago;
 
-using Materials;
-using Utils;
+using Sillago.Utils;
 
 /// <summary>
 /// Registry class for managing and accessing all defined items.

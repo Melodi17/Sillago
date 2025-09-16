@@ -1,4 +1,6 @@
-namespace Sillago.Recipes;
+namespace Sillago;
+
+using Capabilities;
 
 public interface IMachine
 {

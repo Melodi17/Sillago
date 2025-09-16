@@ -1,7 +1,6 @@
 namespace Sillago.Tests;
 
 using Helpers;
-using Recipes;
 
 [TestFixture]
 public class MachineCapabilityHolderTests

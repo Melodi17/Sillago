@@ -1,7 +1,7 @@
 namespace Sillago.Tests.Helpers;
 
 using System.Diagnostics.CodeAnalysis;
-using Sillago.Recipes;
+using Requirements;
 
 [ExcludeFromCodeCoverage]
 public class DummyRequirement(bool result) : IRecipeRequirement

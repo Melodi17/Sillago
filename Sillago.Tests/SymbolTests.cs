@@ -1,7 +1,7 @@
 namespace Sillago.Tests;
 
 using Helpers;
-using Materials;
+using Symbols;
 using Utils;
 
 [TestFixture]

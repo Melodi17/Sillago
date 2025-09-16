@@ -1,9 +1,7 @@
+namespace Sillago.Types;
+
 using System.Collections;
-
-namespace Sillago.Materials.Types;
-
-using Items;
-using Recipes;
+using Sillago.Symbols;
 
 public class CrystallineMaterial : PowderMaterial
 {

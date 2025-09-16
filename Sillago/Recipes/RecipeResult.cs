@@ -1,7 +1,6 @@
-namespace Sillago.Recipes;
+namespace Sillago;
 
 using System.Text;
-using Items;
 
 public class RecipeResult
 {

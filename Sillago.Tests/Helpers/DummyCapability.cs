@@ -1,6 +1,6 @@
 namespace Sillago.Tests.Helpers;
 
-using Sillago.Recipes;
+using Capabilities;
 
 public interface IDummyCapability : ICapability;
 public interface IOtherDummyCapability : ICapability;

@@ -1,6 +1,4 @@
-namespace Sillago.Materials;
-
-using Utils;
+namespace Sillago.Symbols;
 
 public class Compound : Symbol
 {
