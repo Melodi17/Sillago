@@ -5,12 +5,7 @@ public class ItemMaterialTests
 {
     private Material _testMaterial;
 
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
-    {
-        // Ensure engine is initialized to have materials available
-        SillagoEngine.Initialize();
-    }
+    // Engine should be initialized by GlobalTestSetup
 
     [SetUp]
     public void SetUp()

@@ -1,20 +1,30 @@
 namespace Sillago.Tests;
 
+/// <summary>
+/// Global setup to ensure the engine is initialized once for all tests
+/// </summary>
+[SetUpFixture]
+public class GlobalTestSetup
+{
+    [OneTimeSetUp]
+    public void GlobalSetup()
+    {
+        // Initialize the engine once for all tests
+        try
+        {
+            SillagoEngine.Initialize();
+        }
+        catch (ArgumentException ex) when (ex.Message.Contains("already registered"))
+        {
+            // Engine already initialized - this is fine
+        }
+    }
+}
+
 [TestFixture]
 public class SillagoEngineTests
 {
-    private static bool _isInitialized = false;
-    
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
-    {
-        // Initialize once for all tests
-        if (!_isInitialized)
-        {
-            SillagoEngine.Initialize();
-            _isInitialized = true;
-        }
-    }
+    // Engine should be initialized by GlobalTestSetup
 
     [Test]
     public void Initialize_ShouldGenerateItemsAndRecipes()
