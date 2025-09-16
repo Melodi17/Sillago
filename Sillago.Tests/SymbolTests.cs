@@ -81,7 +81,7 @@ public class SymbolTests
         Assert.That(compound.Components[0].Amount, Is.EqualTo(2));
      
         Element fe = (Element)compound.Components[0].Value;
-        Assert.That(fe.Symbol, Is.EqualTo("Fe"));
+        Assert.That(fe.ShortSymbol, Is.EqualTo("Fe"));
         Assert.That(fe.Name, Is.EqualTo("Iron"));
         Assert.That(compound.Components[1].Value, Is.TypeOf<Compound>());   
         Assert.That(compound.Components[1].Amount, Is.EqualTo(3));
@@ -92,13 +92,13 @@ public class SymbolTests
         Assert.That(so4.Components[0].Amount, Is.EqualTo(1));
         
         Element s = (Element)so4.Components[0].Value;
-        Assert.That(s.Symbol, Is.EqualTo("S"));
+        Assert.That(s.ShortSymbol, Is.EqualTo("S"));
         Assert.That(s.Name, Is.EqualTo("Sulfur"));
         Assert.That(so4.Components[1].Value, Is.TypeOf<Element>());
         Assert.That(so4.Components[1].Amount, Is.EqualTo(4));
         
         Element o = (Element)so4.Components[1].Value;
-        Assert.That(o.Symbol, Is.EqualTo("O"));
+        Assert.That(o.ShortSymbol, Is.EqualTo("O"));
         Assert.That(o.Name, Is.EqualTo("Oxygen"));
     }
     
@@ -116,7 +116,7 @@ public class SymbolTests
         Assert.That(symbol, Is.TypeOf<Element>());
         
         Element element = (Element)symbol;
-        Assert.That(element.Symbol, Is.EqualTo("Na"));
+        Assert.That(element.ShortSymbol, Is.EqualTo("Na"));
         Assert.That(element.Name, Is.EqualTo("Sodium"));
     }
 }

@@ -12,7 +12,7 @@ public class AsciiSymbolFormatter : SymbolFormatter
         { '8', '₈' }, { '9', '₉' },
     };
     
-    protected override string Format(Element element) => element.Symbol;
+    protected override string Format(Element element) => element.ShortSymbol;
     protected override string Format(Compound compound)
     {
         StringBuilder builder = new();

@@ -16,6 +16,9 @@ public class ValueComponent<T>
 
 public class CompoundComponent : ValueComponent<Symbol>
 {
+    public Symbol Component => Value;
+    public int Count => Amount;
+    
     public CompoundComponent(Symbol value, int amount = 1) : base(value, amount)
     {
         

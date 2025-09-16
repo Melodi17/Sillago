@@ -157,18 +157,19 @@ public class Element : Symbol
 
     public float AtomicNumber { get; }
     public string Name { get; }
-    public string Symbol { set; get; }
+    public override string DisplayText => Name;
+    public override string ShortSymbol { get; }
 
     public Element(string name, string symbol, float atomicNumber)
     {
-        this.Name = name;
-        this.Symbol = symbol;
+        this.Name = name ?? throw new ArgumentNullException(nameof(name));
+        this.ShortSymbol = symbol ?? throw new ArgumentNullException(nameof(symbol));
         this.AtomicNumber = atomicNumber;
     }
 
     public static Element? FindBySymbol(string symbol)
     {
-        return Element.Elements.FirstOrDefault(e => e.Symbol.Equals(
+        return Element.Elements.FirstOrDefault(e => e.ShortSymbol.Equals(
             symbol, StringComparison.OrdinalIgnoreCase));
     }
 

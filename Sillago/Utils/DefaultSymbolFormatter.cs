@@ -5,7 +5,7 @@ using Symbols;
 
 public class DefaultSymbolFormatter : SymbolFormatter
 {
-    protected override string Format(Element element) => element.Symbol;
+    protected override string Format(Element element) => element.ShortSymbol;
     protected override string Format(Compound compound)
     {
         StringBuilder builder = new();

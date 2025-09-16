@@ -2,13 +2,18 @@ namespace Sillago;
 
 public class ItemStack
 {
-    public int Amount;
-    public Item Item;
+    public int Amount { get; set; }
+    public Item Item { get; }
+    
     public ItemStack(Item item, int amount = 1)
     {
-        this.Item   = item;
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(nameof(amount), "Amount must be non-negative");
+        
+        this.Item = item ?? throw new ArgumentNullException(nameof(item));
         this.Amount = amount;
     }
+    
     public ItemStack Copy() => new(this.Item, this.Amount);
     
     public override string ToString()
