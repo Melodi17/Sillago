@@ -3,6 +3,7 @@ namespace Sillago.Tests
     using System;
     using System.Collections.Generic;
     using Helpers;
+    using NUnit.Framework;
     using Requirements;
 
     [TestFixture]

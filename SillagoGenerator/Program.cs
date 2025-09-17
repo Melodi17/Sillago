@@ -51,19 +51,17 @@
         private static string GenerateClass(string className, string body)
         {
             string indentBody = string.Join(Environment.NewLine, body.Split(Environment.NewLine).Select(line => "    " + line));
-            return $$"""
-                     // This file is auto-generated. Do not edit manually.
-                     namespace Sillago.Materials;
+            return $@"// This file is auto-generated. Do not edit manually.
+namespace Sillago.Materials;
 
-                     using Types;
+using Types;
 
-                     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-                     public partial class {{className}}
-                     {
-                     {{indentBody}}
-                     }
-
-                     """;
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+public partial class {className}
+{{
+{indentBody}
+}}
+";
         }
 
         private static void GenerateSubstance(Row row, StringBuilder sb)
@@ -83,17 +81,15 @@
             string meltingPoint = Program.ParseTemperature(row["Melting Point"]);
             var (forms, extra) = Program.ParseNotes(row["Notes"]);
   
-            string line = $"""
-                           public static Material {safeName} = new {(isMetal ? "MetalMaterial" : "IngotMaterial")}(
-                               "{name}",
-                               0x{color},
-                               {visualSet},
-                               {symbol},
-                               {flags},
-                               density: {density}f,
-                               meltingPoint: {meltingPoint}){GenerateNameOverrides(forms)};
-                               
-                           """;
+            string line = $@"public static Material {safeName} = new {(isMetal ? "MetalMaterial" : "IngotMaterial")}(
+    ""{name}"",
+    0x{color},
+    {visualSet},
+    {symbol},
+    {flags},
+    density: {density}f,
+    meltingPoint: {meltingPoint}){Program.GenerateNameOverrides(forms)};
+    ";
 
             sb.AppendLine(line);
             Console.WriteLine($"Generated {name}");
@@ -116,17 +112,15 @@
             string liqueficationPoint = Program.ParseTemperature(row["Liquefication Point"]);
             var (forms, extra) = Program.ParseNotes(row["Notes"]);
 
-            string line = $"""
-                           public static Material {safeName} = new {(isCrystalline ? "CrystallineMaterial" : "PowderMaterial")}(
-                               "{name}",
-                               0x{color},
-                               {visualSet},
-                               {symbol},
-                               {flags},
-                               density: {density}f,
-                               liquificationPoint: {liqueficationPoint}){GenerateNameOverrides(forms)};
-
-                           """;
+            string line = $@"public static Material {safeName} = new {(isCrystalline ? "CrystallineMaterial" : "PowderMaterial")}(
+    ""{name}"",
+    0x{color},
+    {visualSet},
+    {symbol},
+    {flags},
+    density: {density}f,
+    liquificationPoint: {liqueficationPoint}){Program.GenerateNameOverrides(forms)};
+";
 
             sb.AppendLine(line);
             Console.WriteLine($"Generated {name}");
@@ -149,18 +143,16 @@
             string vaporisationPoint = Program.ParseTemperature(row["Vaporisation Point"]);
             var (forms, extra) = Program.ParseNotes(row["Notes"]);
 
-            string line = $"""
-                           public static Material {safeName} = new FluidMaterial(
-                               "{name}",
-                               0x{color},
-                               {visualSet},
-                               {symbol},
-                               {flags},
-                               density: {density}f,
-                               freezingPoint: {freezingPoint},
-                               vaporisationPoint: {vaporisationPoint}){GenerateNameOverrides(forms)};
-
-                           """;
+            string line = $@"public static Material {safeName} = new FluidMaterial(
+    ""{name}"",
+    0x{color},
+    {visualSet},
+    {symbol},
+    {flags},
+    density: {density}f,
+    freezingPoint: {freezingPoint},
+    vaporisationPoint: {vaporisationPoint}){Program.GenerateNameOverrides(forms)};
+";
 
             sb.AppendLine(line);
             Console.WriteLine($"Generated {name}");
@@ -181,16 +173,14 @@
             string feedsOn = Program.GenerateSafeName(row["Feeds On"]);
             var (forms, extra) = Program.ParseNotes(row["Notes"]);
 
-            string line = $"""
-                           public static Material {safeName} = new BioMaterial(
-                                "{name}",
-                                {variation},
-                                {flags},
-                                minTemp: {minTemp},
-                                maxTemp: {maxTemp},
-                                feedsOn: Materials.{feedsOn}){GenerateNameOverrides(forms)};
-
-                           """;
+            string line = $@"public static Material {safeName} = new BioMaterial(
+     ""{name}"",
+     {variation},
+     {flags},
+     minTemp: {minTemp},
+     maxTemp: {maxTemp},
+     feedsOn: Materials.{feedsOn}){Program.GenerateNameOverrides(forms)};
+";
 
             sb.AppendLine(line);
             Console.WriteLine($"Generated {name}");
@@ -231,12 +221,10 @@
                 }
             }
         
-            string line = $"""
-                           public static Alloy {safeName} = new Alloy(
-                               "{name}",
-                               {string.Join(", ", components)});
-                               
-                           """;
+            string line = $@"public static Alloy {safeName} = new Alloy(
+    ""{name}"",
+    {string.Join(", ", components)});
+    ";
         
             sb.AppendLine(line);
             Console.WriteLine($"Generated {name}");

@@ -2,6 +2,7 @@ namespace Sillago.Tests
 {
     using System;
     using System.Linq;
+    using NUnit.Framework;
     using Types;
 
     [TestFixture]

@@ -2,6 +2,7 @@ namespace Sillago.Tests
 {
     using System;
     using Helpers;
+    using NUnit.Framework;
 
     [TestFixture]
     public class MachineCapabilityHolderTests

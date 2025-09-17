@@ -1,6 +1,7 @@
 namespace Sillago.Tests
 {
     using System;
+    using NUnit.Framework;
     using Utils;
 
     [TestFixture]

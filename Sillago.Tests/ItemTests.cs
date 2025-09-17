@@ -1,5 +1,7 @@
 namespace Sillago.Tests
 {
+    using NUnit.Framework;
+
     [TestFixture]
     public class ItemTests
     {

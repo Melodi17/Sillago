@@ -2,6 +2,7 @@ namespace Sillago.Tests
 {
     using System;
     using System.Linq;
+    using NUnit.Framework;
 
     /// <summary>
     /// Global setup to ensure the engine is initialized once for all tests

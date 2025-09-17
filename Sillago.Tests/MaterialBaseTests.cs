@@ -3,6 +3,7 @@ namespace Sillago.Tests
     using Symbols;
     using System.Collections;
     using System.Text;
+    using NUnit.Framework;
     using Types;
 
     [TestFixture]
