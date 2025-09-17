@@ -1,3 +1,4 @@
-namespace Sillago.Capabilities;
-
-public interface ICapability;
+namespace Sillago.Capabilities
+{
+    public interface ICapability { }
+}

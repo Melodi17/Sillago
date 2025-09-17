@@ -1,15 +1,16 @@
-namespace Sillago.Symbols;
-
-public class Polymer : Symbol
+namespace Sillago.Symbols
 {
-    public Symbol Source { get; }
-    public Polymer(Symbol source)
+    public class Polymer : Symbol
     {
-        this.Source = source;
+        public Symbol Source { get; }
+        public Polymer(Symbol source)
+        {
+            this.Source = source;
+        }
     }
-}
 
-public static class PolymerExtensions
-{
-    public static Polymer Polymer(this Symbol source) => new Polymer(source);
+    public static class PolymerExtensions
+    {
+        public static Polymer Polymer(this Symbol source) => new Polymer(source);
+    }
 }

@@ -1,6 +1,7 @@
-namespace Sillago.Tests.Helpers;
+namespace Sillago.Tests.Helpers
+{
+    using Capabilities;
 
-using Capabilities;
-
-public interface IDummyCapability : ICapability;
-public interface IOtherDummyCapability : ICapability;
+    public interface IDummyCapability : ICapability { }
+    public interface IOtherDummyCapability : ICapability { }
+}

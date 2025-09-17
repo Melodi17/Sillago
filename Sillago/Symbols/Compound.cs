@@ -1,18 +1,19 @@
-namespace Sillago.Symbols;
-
-public class Compound : Symbol
+namespace Sillago.Symbols
 {
-    public string? Name { get; }
-    public readonly CompoundComponent[] Components;
-    public Compound(string name, params CompoundComponent[] components)
+    public class Compound : Symbol
     {
-        this.Name = name;
-        this.Components = components;
-    }
+        public string? Name { get; }
+        public readonly CompoundComponent[] Components;
+        public Compound(string name, params CompoundComponent[] components)
+        {
+            this.Name = name;
+            this.Components = components;
+        }
     
-    public Compound(params CompoundComponent[] components)
-    {
-        this.Name = null;
-        this.Components = components;
+        public Compound(params CompoundComponent[] components)
+        {
+            this.Name = null;
+            this.Components = components;
+        }
     }
 }

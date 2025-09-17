@@ -1,105 +1,109 @@
-namespace Sillago;
-
-using System.Text;
-using Requirements;
-
-public class Recipe
+namespace Sillago
 {
-    public string Id { get; }
-    public string Name { get; }
-    public RecipeType Type { get; }
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Requirements;
 
-    public IReadOnlyList<RecipeIngredient> Inputs { get; }
-    public IReadOnlyList<RecipeResult> Outputs { get; }
-
-    public IReadOnlyList<IRecipeRequirement> Requirements { get; }
-    public TimeSpan Duration { get; }
-
-    public Recipe(
-        string id,
-        string name,
-        RecipeType type,
-        IReadOnlyList<RecipeIngredient> inputs,
-        IReadOnlyList<RecipeResult> outputs,
-        IReadOnlyList<IRecipeRequirement>? requirements = null,
-        TimeSpan duration = default)
+    public class Recipe
     {
-        this.Id = id;
-        this.Name = name;
-        this.Type = type;
-        this.Inputs = inputs;
-        this.Outputs = outputs;
-        this.Requirements = requirements ?? [];
-        this.Duration = duration;
-    }
+        public string Id { get; }
+        public string Name { get; }
+        public RecipeType Type { get; }
 
-    public string GetInfo()
-    {
-        StringBuilder sb = new();
+        public IReadOnlyList<RecipeIngredient> Inputs { get; }
+        public IReadOnlyList<RecipeResult> Outputs { get; }
 
-        sb.AppendLine($"ID: {this.Id}");
-        sb.AppendLine($"Duration: {this.Duration.TotalSeconds:0.##}s");
+        public IReadOnlyList<IRecipeRequirement> Requirements { get; }
+        public TimeSpan Duration { get; }
 
-        sb.AppendLine($"Inputs:");
-        foreach (RecipeIngredient input in this.Inputs)
-            sb.AppendLine($"  - {input}");
-
-        sb.AppendLine($"Outputs:");
-        foreach (RecipeResult output in this.Outputs)
-            sb.AppendLine($"  - {output}");
-
-        foreach (IRecipeRequirement requirement in this.Requirements)
-            sb.Append(requirement.GetInfo());
-
-        return sb.ToString();
-    }
-
-    public bool AreRequirementsMet(IMachine machine)
-    {
-        return this.Requirements.All(r => r.IsMet(machine));
-    }
-    public bool AreInputsAvailable(Inventory input)
-    {
-        return this.Inputs.All(recipeInput => recipeInput.IsAvailable(input));
-    }
-    
-    public void ConsumeInputs(Inventory input)
-    {
-        foreach (RecipeIngredient ingredient in this.Inputs)
+        public Recipe(
+            string id,
+            string name,
+            RecipeType type,
+            IReadOnlyList<RecipeIngredient> inputs,
+            IReadOnlyList<RecipeResult> outputs,
+            IReadOnlyList<IRecipeRequirement>? requirements = null,
+            TimeSpan duration = default)
         {
-            if (ingredient.IsConsumed)
-            {
-                // Find the first option that is available in the input inventory
-                ItemStack? matchedOption = ingredient.Options
-                    .FirstOrDefault(option => input.GetTotalAmount(option.Item) >= option.Amount);
-                
-                if (matchedOption == null)
-                    throw new InvalidOperationException("Not enough input items to consume. Was AreInputsAvailable checked before calling this method?");
+            this.Id = id;
+            this.Name = name;
+            this.Type = type;
+            this.Inputs = inputs;
+            this.Outputs = outputs;
+            this.Requirements = requirements ?? Array.Empty<IRecipeRequirement>();
+            this.Duration = duration;
+        }
 
-                input.Remove(matchedOption.Item, matchedOption.Amount);
+        public string GetInfo()
+        {
+            StringBuilder sb = new();
+
+            sb.AppendLine($"ID: {this.Id}");
+            sb.AppendLine($"Duration: {this.Duration.TotalSeconds:0.##}s");
+
+            sb.AppendLine($"Inputs:");
+            foreach (RecipeIngredient input in this.Inputs)
+                sb.AppendLine($"  - {input}");
+
+            sb.AppendLine($"Outputs:");
+            foreach (RecipeResult output in this.Outputs)
+                sb.AppendLine($"  - {output}");
+
+            foreach (IRecipeRequirement requirement in this.Requirements)
+                sb.Append(requirement.GetInfo());
+
+            return sb.ToString();
+        }
+
+        public bool AreRequirementsMet(IMachine machine)
+        {
+            return this.Requirements.All(r => r.IsMet(machine));
+        }
+        public bool AreInputsAvailable(Inventory input)
+        {
+            return this.Inputs.All(recipeInput => recipeInput.IsAvailable(input));
+        }
+    
+        public void ConsumeInputs(Inventory input)
+        {
+            foreach (RecipeIngredient ingredient in this.Inputs)
+            {
+                if (ingredient.IsConsumed)
+                {
+                    // Find the first option that is available in the input inventory
+                    ItemStack? matchedOption = ingredient.Options
+                        .FirstOrDefault(option => input.GetTotalAmount(option.Item) >= option.Amount);
+                
+                    if (matchedOption == null)
+                        throw new InvalidOperationException("Not enough input items to consume. Was AreInputsAvailable checked before calling this method?");
+
+                    input.Remove(matchedOption.Item, matchedOption.Amount);
+                }
             }
         }
-    }
-    public bool CanProduceOutputs(Inventory output)
-    {
-        int requiredSlots = this.Outputs.Count;
-        int availableSlots = output.Capacity - output.Stacks.Count;
-        if (availableSlots < requiredSlots)
-            return false;
-        
-        return true;
-    }
-    
-    public void ProduceOutputs(Inventory output)
-    {
-        foreach (RecipeResult result in this.Outputs)
+        public bool CanProduceOutputs(Inventory output)
         {
-            ItemStack? produced = result.GetResult();
-            if (produced != null)
+            int requiredSlots = this.Outputs.Count;
+            int availableSlots = output.Capacity - output.Stacks.Count;
+            if (availableSlots < requiredSlots)
+                return false;
+        
+            return true;
+        }
+    
+        public void ProduceOutputs(Inventory output)
+        {
+            foreach (RecipeResult result in this.Outputs)
             {
-                bool added = output.Add(produced);
-                if (!added)
-                    throw new InvalidOperationException("Not enough space in output inventory to add produced items. Was CanProduceOutputs checked before calling this method?");
+                ItemStack? produced = result.GetResult();
+                if (produced != null)
+                {
+                    bool added = output.Add(produced);
+                    if (!added)
+                        throw new InvalidOperationException("Not enough space in output inventory to add produced items. Was CanProduceOutputs checked before calling this method?");
+                }
             }
         }
     }

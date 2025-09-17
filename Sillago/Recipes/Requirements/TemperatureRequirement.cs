@@ -1,54 +1,56 @@
-namespace Sillago.Requirements;
-
-using System.Diagnostics;
-using Capabilities;
-
-public class TemperatureRequirement : IRecipeRequirement
+namespace Sillago.Requirements
 {
-    public float? Min { get; }
-    public float? Max { get; }
-    
-    protected TemperatureRequirement(float? min = null, float? max = null)
+    using System;
+    using System.Diagnostics;
+    using Capabilities;
+
+    public class TemperatureRequirement : IRecipeRequirement
     {
-        this.Min = min;
-        this.Max = max;
-        
-        if (min == null && max == null)
-            throw new ArgumentException("At least one of atLeast or atMax must be specified.");
-    }
+        public float? Min { get; }
+        public float? Max { get; }
     
-    public static TemperatureRequirement Above(float temperature) => new(min: temperature);
-    public static TemperatureRequirement Below(float temperature) => new(max: temperature);
-    public static TemperatureRequirement Between(float minTemperature, float maxTemperature)
-    {
-        if (minTemperature > maxTemperature)
-            throw new ArgumentException("minTemperature cannot be greater than maxTemperature.");
+        protected TemperatureRequirement(float? min = null, float? max = null)
+        {
+            this.Min = min;
+            this.Max = max;
         
-        return new(min: minTemperature, max: maxTemperature);
-    }
+            if (min == null && max == null)
+                throw new ArgumentException("At least one of atLeast or atMax must be specified.");
+        }
     
-    public string GetInfo()
-    {
-        if (this.Min != null && this.Max != null)
-            return $"Temperature between {this.Min:0.##}°C and {this.Max:0.##}°C";
-        if (this.Min != null)
-            return $"Temperature at least {this.Min:0.##}°C";
-        if (this.Max != null)
-            return $"Temperature less than or equal to {this.Max:0.##}°C";
+        public static TemperatureRequirement Above(float temperature) => new(min: temperature);
+        public static TemperatureRequirement Below(float temperature) => new(max: temperature);
+        public static TemperatureRequirement Between(float minTemperature, float maxTemperature)
+        {
+            if (minTemperature > maxTemperature)
+                throw new ArgumentException("minTemperature cannot be greater than maxTemperature.");
         
-        throw new UnreachableException("Invalid state: both Min and Max are null.");
-    }
+            return new(min: minTemperature, max: maxTemperature);
+        }
     
-    public bool IsMet(IMachine machine)
-    {
-        ITemperatureCapability capability = machine.Get<ITemperatureCapability>();
+        public string GetInfo()
+        {
+            if (this.Min != null && this.Max != null)
+                return $"Temperature between {this.Min:0.##}°C and {this.Max:0.##}°C";
+            if (this.Min != null)
+                return $"Temperature at least {this.Min:0.##}°C";
+            if (this.Max != null)
+                return $"Temperature less than or equal to {this.Max:0.##}°C";
         
-        if (this.Min != null && capability.Temperature < this.Min)
-            return false;
+            throw new UnreachableException("Invalid state: both Min and Max are null.");
+        }
+    
+        public bool IsMet(IMachine machine)
+        {
+            ITemperatureCapability capability = machine.Get<ITemperatureCapability>();
         
-        if (this.Max != null && capability.Temperature > this.Max)
-            return false;
+            if (this.Min != null && capability.Temperature < this.Min)
+                return false;
         
-        return true;
+            if (this.Max != null && capability.Temperature > this.Max)
+                return false;
+        
+            return true;
+        }
     }
 }

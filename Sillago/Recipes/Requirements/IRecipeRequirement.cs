@@ -1,7 +1,8 @@
-namespace Sillago.Requirements;
-
-public interface IRecipeRequirement
+namespace Sillago.Requirements
 {
-    string GetInfo();
-    bool IsMet(IMachine machine);
+    public interface IRecipeRequirement
+    {
+        string GetInfo();
+        bool IsMet(IMachine machine);
+    }
 }

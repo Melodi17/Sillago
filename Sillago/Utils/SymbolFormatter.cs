@@ -1,20 +1,22 @@
-namespace Sillago.Utils;
-
-using Symbols;
-
-public abstract class SymbolFormatter
+namespace Sillago.Utils
 {
-    public string Format(Symbol symbol) => symbol switch
+    using System;
+    using Symbols;
+
+    public abstract class SymbolFormatter
     {
-        Element e => this.Format(e),
-        Compound c => this.Format(c),
-        CompoundComponent cc => this.Format(cc),
-        Polymer p => this.Format(p),
-        _ => throw new NotSupportedException($"Symbol type {symbol.GetType().Name} is not supported.")
-    };
+        public string Format(Symbol symbol) => symbol switch
+        {
+            Element e => this.Format(e),
+            Compound c => this.Format(c),
+            CompoundComponent cc => this.Format(cc),
+            Polymer p => this.Format(p),
+            _ => throw new NotSupportedException($"Symbol type {symbol.GetType().Name} is not supported.")
+        };
     
-    protected abstract string Format(Element element);
-    protected abstract string Format(Compound compound);
-    protected abstract string Format(CompoundComponent component);
-    protected abstract string Format(Polymer polymer);
+        protected abstract string Format(Element element);
+        protected abstract string Format(Compound compound);
+        protected abstract string Format(CompoundComponent component);
+        protected abstract string Format(Polymer polymer);
+    }
 }

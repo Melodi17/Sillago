@@ -1,6 +1,7 @@
-namespace Sillago.Capabilities;
-
-public interface IMoldCapability : ICapability
+namespace Sillago.Capabilities
 {
-    MaterialType MoldType { get; }
+    public interface IMoldCapability : ICapability
+    {
+        MaterialType MoldType { get; }
+    }
 }

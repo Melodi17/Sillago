@@ -1,10 +1,13 @@
-namespace Sillago.Utils;
-
-public static class EnumExtensions
+namespace Sillago.Utils
 {
-    public static bool Is<TEnum>(this TEnum value, TEnum flag)
-        where TEnum : Enum
+    using System;
+
+    public static class EnumExtensions
     {
-        return (Convert.ToUInt64(value) & Convert.ToUInt64(flag)) == Convert.ToUInt64(flag);
+        public static bool Is<TEnum>(this TEnum value, TEnum flag)
+            where TEnum : Enum
+        {
+            return (Convert.ToUInt64(value) & Convert.ToUInt64(flag)) == Convert.ToUInt64(flag);
+        }
     }
 }

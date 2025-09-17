@@ -1,12 +1,13 @@
-namespace Sillago.Utils;
-
-public static class StringExtensions
+namespace Sillago.Utils
 {
-    public static string TitleCase(this string str)
+    public static class StringExtensions
     {
-        if (string.IsNullOrEmpty(str))
-            return str;
+        public static string TitleCase(this string str)
+        {
+            if (string.IsNullOrEmpty(str))
+                return str;
 
-        return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToLower());
+            return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToLower());
+        }
     }
 }

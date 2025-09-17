@@ -1,118 +1,124 @@
-namespace SillagoGenerator;
-
-using System.Collections;
-using System.Text;
-
-public class Page : IEnumerable<Row>
+namespace SillagoGenerator
 {
-    public readonly string Name;
-    private readonly string _url;
-    private readonly List<Row> _rows = new();
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text;
 
-    public Page(string name, string url)
+    public class Page : IEnumerable<Row>
     {
-        this.Name = name;
-        this._url = url;
-        this.Load();
-    }
+        public readonly string Name;
+        private readonly string _url;
+        private readonly List<Row> _rows = new();
 
-    public Row this[int index]
-    {
-        get
+        public Page(string name, string url)
         {
-            if (index < 0 || index >= this._rows.Count)
-                throw new IndexOutOfRangeException($"Row index {index} is out of range.");
-            return this._rows[index];
+            this.Name = name;
+            this._url = url;
+            this.Load();
         }
-    }
-    
-    public IEnumerator<Row> GetEnumerator() => this._rows.GetEnumerator();
-    IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-    
-    private void Load()
-    {
-        using HttpClient client = new();
-        string csvData = client.GetStringAsync(this._url).Result;
 
-        using StringReader reader = new(csvData);
-        string? headerLine = reader.ReadLine();
-        if (headerLine == null)
-            throw new Exception("CSV data is empty.");
-
-        string[] headers = this.ParseCsvLine(headerLine).ToArray();
-
-        string? line;
-        while ((line = reader.ReadLine()) != null)
+        public Row this[int index]
         {
-            string[] values = this.ParseCsvLine(line).ToArray();
-            Dictionary<string, string> row = new();
-
-            for (int i = 0; i < headers.Length; i++)
+            get
             {
-                string header = headers[i];
-                string value = i < values.Length ? values[i] : string.Empty;
-                row[header] = value;
+                if (index < 0 || index >= this._rows.Count)
+                    throw new IndexOutOfRangeException($"Row index {index} is out of range.");
+                return this._rows[index];
             }
-
-            this._rows.Add(new Row(row));
         }
-    }
-
-    private IEnumerable<string> ParseCsvLine(string line)
-    {
-        bool inQuotes = false;
-        StringBuilder valueBuilder = new();
-
-        for (int i = 0; i < line.Length; i++)
+    
+        public IEnumerator<Row> GetEnumerator() => this._rows.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+    
+        private void Load()
         {
-            char c = line[i];
+            using HttpClient client = new();
+            string csvData = client.GetStringAsync(this._url).Result;
 
-            if (c == '\"')
+            using StringReader reader = new(csvData);
+            string? headerLine = reader.ReadLine();
+            if (headerLine == null)
+                throw new Exception("CSV data is empty.");
+
+            string[] headers = this.ParseCsvLine(headerLine).ToArray();
+
+            string? line;
+            while ((line = reader.ReadLine()) != null)
             {
-                if (inQuotes && i + 1 < line.Length && line[i + 1] == '\"')
+                string[] values = this.ParseCsvLine(line).ToArray();
+                Dictionary<string, string> row = new();
+
+                for (int i = 0; i < headers.Length; i++)
                 {
-                    valueBuilder.Append('\"');
-                    i++;
+                    string header = headers[i];
+                    string value = i < values.Length ? values[i] : string.Empty;
+                    row[header] = value;
+                }
+
+                this._rows.Add(new Row(row));
+            }
+        }
+
+        private IEnumerable<string> ParseCsvLine(string line)
+        {
+            bool inQuotes = false;
+            StringBuilder valueBuilder = new();
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+
+                if (c == '\"')
+                {
+                    if (inQuotes && i + 1 < line.Length && line[i + 1] == '\"')
+                    {
+                        valueBuilder.Append('\"');
+                        i++;
+                    }
+                    else
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                }
+                else if (c == ',' && !inQuotes)
+                {
+                    yield return valueBuilder.ToString();
+                    valueBuilder.Clear();
                 }
                 else
                 {
-                    inQuotes = !inQuotes;
+                    valueBuilder.Append(c);
                 }
             }
-            else if (c == ',' && !inQuotes)
-            {
-                yield return valueBuilder.ToString();
-                valueBuilder.Clear();
-            }
-            else
-            {
-                valueBuilder.Append(c);
-            }
+
+            yield return valueBuilder.ToString();
         }
-
-        yield return valueBuilder.ToString();
-    }
-}
-
-public class Row
-{
-    private readonly Dictionary<string, string> _data;
-
-    public Row(Dictionary<string, string> data)
-    {
-        this._data = data;
     }
 
-    public string this[string columnName]
+    public class Row
     {
-        get
+        private readonly Dictionary<string, string> _data;
+
+        public Row(Dictionary<string, string> data)
         {
-            if (this._data.TryGetValue(columnName, out string? value))
-                return value;
-            throw new KeyNotFoundException($"Column '{columnName}' not found in row.");
+            this._data = data;
         }
-    }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if (this._data.TryGetValue(columnName, out string? value))
+                    return value;
+                throw new KeyNotFoundException($"Column '{columnName}' not found in row.");
+            }
+        }
     
-    public IEnumerable<string> Columns => this._data.Keys;
-    public IEnumerable<string> Values => this._data.Values;
+        public IEnumerable<string> Columns => this._data.Keys;
+        public IEnumerable<string> Values => this._data.Values;
+    }
 }

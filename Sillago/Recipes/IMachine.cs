@@ -1,15 +1,17 @@
-namespace Sillago;
-
-using Capabilities;
-
-public interface IMachine
+namespace Sillago
 {
-    public T Get<T>()
-        where T : ICapability
+    using System;
+    using Capabilities;
+
+    public interface IMachine
     {
-        if (this is not T)
-            throw new InvalidOperationException($"Machine does not support capability {typeof(T).Name}.");
+        public T Get<T>()
+            where T : ICapability
+        {
+            if (this is not T)
+                throw new InvalidOperationException($"Machine does not support capability {typeof(T).Name}.");
         
-        return (T)this;
+            return (T)this;
+        }
     }
 }

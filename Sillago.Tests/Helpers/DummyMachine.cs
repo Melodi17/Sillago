@@ -1,8 +1,9 @@
-namespace Sillago.Tests;
-
-using Helpers;
-
-public class DummyMachine : IMachine, IDummyCapability 
+namespace Sillago.Tests
 {
+    using Helpers;
+
+    public class DummyMachine : IMachine, IDummyCapability 
+    {
     
+    }
 }

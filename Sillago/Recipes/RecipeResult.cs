@@ -1,88 +1,90 @@
-namespace Sillago;
-
-using System.Text;
-
-public class RecipeResult
+namespace Sillago
 {
-    public Item Item { get; }
-    public int ResultChance { get; } // Percentage chance (0-100)
-    public int MinResult { get; }
-    public int MaxResult { get; }
-    public string AmountRange => this.MinResult == this.MaxResult 
-        ? this.MinResult.ToString() 
-        : $"{this.MinResult}-{this.MaxResult}";
+    using System;
+    using System.Text;
 
-    private RecipeResult(
-        ItemStack item,
-        int resultChance = 100)
+    public class RecipeResult
     {
-        if (resultChance < 0 || resultChance > 100)
-            throw new ArgumentOutOfRangeException(nameof(resultChance), "Result chance must be between 0 and 100.");
+        public Item Item { get; }
+        public int ResultChance { get; } // Percentage chance (0-100)
+        public int MinResult { get; }
+        public int MaxResult { get; }
+        public string AmountRange => this.MinResult == this.MaxResult 
+            ? this.MinResult.ToString() 
+            : $"{this.MinResult}-{this.MaxResult}";
 
-        this.Item = item.Item;
-        this.ResultChance = resultChance;
-        this.MinResult = item.Amount;
-        this.MaxResult = item.Amount;
-    }
-    
-    private RecipeResult(
-        Item item,
-        int minResult,
-        int maxResult,
-        int resultChance = 100)
-    {
-        if (resultChance < 0 || resultChance > 100)
-            throw new ArgumentOutOfRangeException(nameof(resultChance), "Result chance must be between 0 and 100.");
-        if (minResult < 0)
-            throw new ArgumentOutOfRangeException(nameof(minResult), "Min result cannot be negative.");
-        if (maxResult < minResult)
-            throw new ArgumentOutOfRangeException(nameof(maxResult), "Max result cannot be less than min result.");
-
-        this.Item = item;
-        this.ResultChance = resultChance;
-        this.MinResult = minResult;
-        this.MaxResult = maxResult;
-    }
-    
-    public static RecipeResult Of(
-        ItemStack item,
-        int resultChance = 100) => new(item, resultChance);
-    
-    public static RecipeResult OfBetween(
-        Item item,
-        int minResult,
-        int maxResult,
-        int resultChance = 100) => new(item, minResult, maxResult, resultChance);
-    
-    public ItemStack? GetResult()
-    {
-        Random rand = new();
-        if (rand.Next(0, 100) < this.ResultChance)
+        private RecipeResult(
+            ItemStack item,
+            int resultChance = 100)
         {
-            int amount = rand.Next(this.MinResult, this.MaxResult + 1);
-            return new ItemStack(this.Item, amount);
+            if (resultChance < 0 || resultChance > 100)
+                throw new ArgumentOutOfRangeException(nameof(resultChance), "Result chance must be between 0 and 100.");
+
+            this.Item = item.Item;
+            this.ResultChance = resultChance;
+            this.MinResult = item.Amount;
+            this.MaxResult = item.Amount;
         }
-        
-        return null;
-    }
     
-    public static implicit operator RecipeResult(ItemStack itemStack) => new(itemStack);
+        private RecipeResult(
+            Item item,
+            int minResult,
+            int maxResult,
+            int resultChance = 100)
+        {
+            if (resultChance < 0 || resultChance > 100)
+                throw new ArgumentOutOfRangeException(nameof(resultChance), "Result chance must be between 0 and 100.");
+            if (minResult < 0)
+                throw new ArgumentOutOfRangeException(nameof(minResult), "Min result cannot be negative.");
+            if (maxResult < minResult)
+                throw new ArgumentOutOfRangeException(nameof(maxResult), "Max result cannot be less than min result.");
+
+            this.Item = item;
+            this.ResultChance = resultChance;
+            this.MinResult = minResult;
+            this.MaxResult = maxResult;
+        }
     
-    public static implicit operator RecipeResult(Item item) => new(item, 1, 1);
+        public static RecipeResult Of(
+            ItemStack item,
+            int resultChance = 100) => new(item, resultChance);
     
-    public override string ToString()
-    {
-        bool isCertain = this.ResultChance == 100;
+        public static RecipeResult OfBetween(
+            Item item,
+            int minResult,
+            int maxResult,
+            int resultChance = 100) => new(item, minResult, maxResult, resultChance);
+    
+        public ItemStack? GetResult()
+        {
+            Random rand = new();
+            if (rand.Next(0, 100) < this.ResultChance)
+            {
+                int amount = rand.Next(this.MinResult, this.MaxResult + 1);
+                return new ItemStack(this.Item, amount);
+            }
         
-        StringBuilder sb = new();
-        if (this.Item.CountAsVolume)
-            sb.Append($"{this.Item.Name} {this.AmountRange}mL");
-        else
-            sb.Append( $"{this.AmountRange} x {this.Item.Name}");
+            return null;
+        }
+    
+        public static implicit operator RecipeResult(ItemStack itemStack) => new(itemStack);
+    
+        public static implicit operator RecipeResult(Item item) => new(item, 1, 1);
+    
+        public override string ToString()
+        {
+            bool isCertain = this.ResultChance == 100;
         
-        if (!isCertain)
-            sb.Append($" ({this.ResultChance}%)");
+            StringBuilder sb = new();
+            if (this.Item.CountAsVolume)
+                sb.Append($"{this.Item.Name} {this.AmountRange}mL");
+            else
+                sb.Append( $"{this.AmountRange} x {this.Item.Name}");
         
-        return sb.ToString();
+            if (!isCertain)
+                sb.Append($" ({this.ResultChance}%)");
+        
+            return sb.ToString();
+        }
     }
 }

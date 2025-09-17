@@ -1,13 +1,14 @@
-namespace Sillago;
-
-using System.Collections;
-using Utils;
-
-public class SillagoEngine
+namespace Sillago
 {
-    public static void Initialize()
+    using System.Collections;
+    using Utils;
+
+    public class SillagoEngine
     {
-        Materials.GenerateItemsAndRecipes();
-        Materials.GenerateLinkingRecipes();
+        public static void Initialize()
+        {
+            Materials.GenerateItemsAndRecipes();
+            Materials.GenerateLinkingRecipes();
+        }
     }
 }

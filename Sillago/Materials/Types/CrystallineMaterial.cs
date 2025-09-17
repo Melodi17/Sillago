@@ -1,31 +1,33 @@
-namespace Sillago.Types;
-
-using System.Collections;
-using Symbols;
-
-public class CrystallineMaterial : PowderMaterial
+namespace Sillago.Types
 {
-    public CrystallineMaterial(string name, int color, VisualSet visualSet, Element symbol, MaterialFlags flags, float density, float? liquificationPoint = null)
-        : base(name, color, visualSet, symbol, flags, density, liquificationPoint) { }
+    using System;
+    using System.Collections;
+    using Symbols;
 
-    protected CrystallineMaterial(string name, Symbol symbol) : base(name, symbol) { }
-
-    public override IEnumerator Generate()
+    public class CrystallineMaterial : PowderMaterial
     {
-        yield return base.Generate();
+        public CrystallineMaterial(string name, int color, VisualSet visualSet, Element symbol, MaterialFlags flags, float density, float? liquificationPoint = null)
+            : base(name, color, visualSet, symbol, flags, density, liquificationPoint) { }
 
-        ItemMaterial crystal = new ItemMaterial(this, MaterialType.Crystal);
-        yield return crystal;
+        protected CrystallineMaterial(string name, Symbol symbol) : base(name, symbol) { }
 
-        yield return this.Deferred(() =>
-            new RecipeBuilder(RecipeType.Macerating)
-                .NamePatterned($"<input> <verb>")
-                .AddInput(crystal.Stack(2))
-                .AddOutput(new ItemMaterial(this, MaterialType.Powder).Stack(5 * 3))
-                .SetDuration(TimeSpan.FromSeconds(2))
-                .BuildAndRegister());
+        public override IEnumerator Generate()
+        {
+            yield return base.Generate();
 
-        if (this.Is(MaterialFlags.Ore))
-            yield return new ItemMaterial(this, MaterialType.Ore);
+            ItemMaterial crystal = new ItemMaterial(this, MaterialType.Crystal);
+            yield return crystal;
+
+            yield return this.Deferred(() =>
+                new RecipeBuilder(RecipeType.Macerating)
+                    .NamePatterned($"<input> <verb>")
+                    .AddInput(crystal.Stack(2))
+                    .AddOutput(new ItemMaterial(this, MaterialType.Powder).Stack(5 * 3))
+                    .SetDuration(TimeSpan.FromSeconds(2))
+                    .BuildAndRegister());
+
+            if (this.Is(MaterialFlags.Ore))
+                yield return new ItemMaterial(this, MaterialType.Ore);
+        }
     }
 }

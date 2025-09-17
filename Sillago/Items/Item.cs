@@ -1,20 +1,23 @@
-namespace Sillago;
-
-public class Item
+namespace Sillago
 {
-    public string Id { get; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public virtual bool CountAsVolume => false;
-    public ItemStack Stack(int amount = 1) => new(this, amount);
+    using System;
 
-    public Item(string id, string name, string description = "")
+    public class Item
     {
-        if (string.IsNullOrEmpty(id))
-            throw new ArgumentException("Item ID cannot be null or empty.", nameof(id));
+        public string Id { get; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public virtual bool CountAsVolume => false;
+        public ItemStack Stack(int amount = 1) => new(this, amount);
+
+        public Item(string id, string name, string description = "")
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("Item ID cannot be null or empty.", nameof(id));
         
-        this.Id          = id;
-        this.Name        = name;
-        this.Description = description;
+            this.Id          = id;
+            this.Name        = name;
+            this.Description = description;
+        }
     }
 }

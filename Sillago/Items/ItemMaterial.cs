@@ -1,20 +1,21 @@
-namespace Sillago;
-
-using Utils;
-
-public class ItemMaterial : Item
+namespace Sillago
 {
-    public readonly Material     Material;
-    public readonly MaterialType Type;
+    using Utils;
 
-    public override bool CountAsVolume => this.Type is MaterialType.Liquid or MaterialType.Gas;
-
-    public ItemMaterial(Material material, MaterialType type) : base(
-        Identifier.Create($"{material.Name}_{type}"),
-        material.FormNames[type],
-        material.GetDescription().ToString())
+    public class ItemMaterial : Item
     {
-        this.Material = material;
-        this.Type     = type;
+        public readonly Material     Material;
+        public readonly MaterialType Type;
+
+        public override bool CountAsVolume => this.Type is MaterialType.Liquid or MaterialType.Gas;
+
+        public ItemMaterial(Material material, MaterialType type) : base(
+            Identifier.Create($"{material.Name}_{type}"),
+            material.FormNames[type],
+            material.GetDescription().ToString())
+        {
+            this.Material = material;
+            this.Type     = type;
+        }
     }
 }

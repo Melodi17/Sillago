@@ -1,73 +1,75 @@
-namespace Sillago.Types;
-
-using System.Collections;
-using Requirements;
-using Symbols;
-
-public class BioMaterial : Material
+namespace Sillago.Types
 {
-    public Material? FeedsOn; // The material this bio material feeds on
-    public float MinTemp;
-    public float MaxTemp;
+    using System;
+    using System.Collections;
+    using Requirements;
+    using Symbols;
 
-    public BioMaterial(
-        string name,
-        int variation,
-        MaterialFlags flags,
-        float minTemp,
-        float maxTemp,
-        Material feedsOn)
-        : base(name, BioMaterial.CreateMicrobialCulture(variation))
+    public class BioMaterial : Material
     {
-        this.Color = BioMaterial.CreateColor(variation);
-        this.VisualSet = VisualSet.Default;
-        this.Flags = flags;
+        public Material? FeedsOn; // The material this bio material feeds on
+        public float MinTemp;
+        public float MaxTemp;
 
-        this.Density = 1000f;
-        this.FeedsOn = feedsOn;
+        public BioMaterial(
+            string name,
+            int variation,
+            MaterialFlags flags,
+            float minTemp,
+            float maxTemp,
+            Material feedsOn)
+            : base(name, BioMaterial.CreateMicrobialCulture(variation))
+        {
+            this.Color = BioMaterial.CreateColor(variation);
+            this.VisualSet = VisualSet.Default;
+            this.Flags = flags;
 
-        this.MinTemp = minTemp;
-        this.MaxTemp = maxTemp;
-    }
+            this.Density = 1000f;
+            this.FeedsOn = feedsOn;
 
-    private static Compound CreateMicrobialCulture(int variation)
-    {
-        const int scale = 5;
+            this.MinTemp = minTemp;
+            this.MaxTemp = maxTemp;
+        }
 
-        int deltaC = ((variation         % 5) - 2) * scale; // -2 to +2
-        int deltaH = (((variation / 5)   % 7) - 3) * scale; // -3 to +3
-        int deltaO = (((variation / 35)  % 3) - 1) * scale; // -1 to +1
-        int deltaN = (((variation / 105) % 3) - 1) * scale;
+        private static Compound CreateMicrobialCulture(int variation)
+        {
+            const int scale = 5;
 
-        int c = 1000 + deltaC; // base value of 1000
-        int h = 2000 + deltaH; // base value of 2000
-        int o = 1000 + deltaO; // base value of 1000
-        int n = 300  + deltaN; // base value of 300
+            int deltaC = ((variation         % 5) - 2) * scale; // -2 to +2
+            int deltaH = (((variation / 5)   % 7) - 3) * scale; // -3 to +3
+            int deltaO = (((variation / 35)  % 3) - 1) * scale; // -1 to +1
+            int deltaN = (((variation / 105) % 3) - 1) * scale;
 
-        return new Compound(
-            "MicrobialCulture",
-            Element.C * c, Element.H * h, Element.O * o, Element.N * n);
-    }
+            int c = 1000 + deltaC; // base value of 1000
+            int h = 2000 + deltaH; // base value of 2000
+            int o = 1000 + deltaO; // base value of 1000
+            int n = 300  + deltaN; // base value of 300
 
-    private static int CreateColor(int variation)
-    {
-        return 0xA3C1AD * variation;
-    }
+            return new Compound(
+                "MicrobialCulture",
+                Element.C * c, Element.H * h, Element.O * o, Element.N * n);
+        }
 
-    public override IEnumerator Generate()
-    {
-        ItemMaterial culture = new ItemMaterial(this, MaterialType.Culture);
-        yield return culture;
+        private static int CreateColor(int variation)
+        {
+            return 0xA3C1AD * variation;
+        }
 
-        if (this.FeedsOn != null)
-            yield return this.Deferred(() =>
-                new RecipeBuilder(RecipeType.Incubating)
-                    .NamePatterned($"<input> <verb>")
-                    .AddInput(culture.Stack())
-                    .AddInput(Items.GetMaterialForm(this.FeedsOn, MaterialType.Liquid).Stack(50))
-                    .AddOutput(culture.Stack(75))
-                    .SetDuration(TimeSpan.FromSeconds(10))
-                    .AddRequirement(TemperatureRequirement.Between(this.MinTemp, this.MaxTemp))
-                    .BuildAndRegister());
+        public override IEnumerator Generate()
+        {
+            ItemMaterial culture = new ItemMaterial(this, MaterialType.Culture);
+            yield return culture;
+
+            if (this.FeedsOn != null)
+                yield return this.Deferred(() =>
+                    new RecipeBuilder(RecipeType.Incubating)
+                        .NamePatterned($"<input> <verb>")
+                        .AddInput(culture.Stack())
+                        .AddInput(Items.GetMaterialForm(this.FeedsOn, MaterialType.Liquid).Stack(50))
+                        .AddOutput(culture.Stack(75))
+                        .SetDuration(TimeSpan.FromSeconds(10))
+                        .AddRequirement(TemperatureRequirement.Between(this.MinTemp, this.MaxTemp))
+                        .BuildAndRegister());
+        }
     }
 }

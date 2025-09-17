@@ -1,10 +1,11 @@
-namespace Sillago;
-
-public enum VisualSet
+namespace Sillago
 {
-    Metallic,
-    Rough,
-    Shiny,
-    Dull,
-    Default,
+    public enum VisualSet
+    {
+        Metallic,
+        Rough,
+        Shiny,
+        Dull,
+        Default,
+    }
 }
