@@ -37,7 +37,7 @@ namespace Sillago.Requirements
             if (this.Max != null)
                 return $"Temperature less than or equal to {this.Max:0.##}°C";
         
-            throw new UnreachableException("Invalid state: both Min and Max are null.");
+            throw new Exception("Invalid state: both Min and Max are null.");
         }
     
         public bool IsMet(IMachine machine)

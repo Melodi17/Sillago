@@ -49,5 +49,29 @@ namespace Sillago.Utils
                 (int)(b / totalWeight)
             );
         }
+        
+        public static T? MaxByX<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelector)
+            where TKey : IComparable<TKey>
+        {
+            using var enumerator = items.GetEnumerator();
+            if (!enumerator.MoveNext())
+                return default;
+
+            T maxItem = enumerator.Current;
+            TKey maxKey = keySelector(maxItem);
+
+            while (enumerator.MoveNext())
+            {
+                T currentItem = enumerator.Current;
+                TKey currentKey = keySelector(currentItem);
+                if (currentKey.CompareTo(maxKey) > 0)
+                {
+                    maxItem = currentItem;
+                    maxKey = currentKey;
+                }
+            }
+
+            return maxItem;
+        }
     }
 }

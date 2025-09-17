@@ -19,7 +19,7 @@ namespace Sillago.Types
 
             // split int color into ARGB components, then perform weighted sum
             this.Color = components.WeightedColorwiseSum(x => x.Amount, x => x.Value.Color);
-            this.VisualSet = components.MaxBy(x => x.Amount)!.Value.VisualSet;
+            this.VisualSet = components.MaxByX(x => x.Amount)!.Value.VisualSet;
 
             this.Flags = Alloy.CalculateFlags(components);
 
