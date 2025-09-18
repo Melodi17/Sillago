@@ -1,7 +1,7 @@
 // This file is auto-generated. Do not edit manually.
 namespace Sillago
 {
-    using Sillago.Symbols;
+    using Symbols;
     using Types;
 
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
@@ -176,8 +176,8 @@ namespace Sillago
             density: 950f,
             meltingPoint: 300f);
         
-        public static Material Sulphur = new CrystallineMaterial(
-            "Sulphur",
+        public static Material Sulfur = new CrystallineMaterial(
+            "Sulfur",
             0xFFFF00,
             VisualSet.Rough,
             Element.S,
@@ -429,8 +429,8 @@ namespace Sillago
             freezingPoint: -30.6f,
             vaporisationPoint: 145f);
     
-        public static Material SulphurDioxide = new FluidMaterial(
-            "Sulphur Dioxide",
+        public static Material SulfurDioxide = new FluidMaterial(
+            "Sulfur Dioxide",
             0xF1EC4D,
             VisualSet.Default,
             new Compound(Element.S * 1, Element.O * 2),
@@ -439,8 +439,8 @@ namespace Sillago
             freezingPoint: -72.7f,
             vaporisationPoint: -10f);
     
-        public static Material SulphurTrioxide = new FluidMaterial(
-            "Sulphur Trioxide",
+        public static Material SulfurTrioxide = new FluidMaterial(
+            "Sulfur Trioxide",
             0xC3BF29,
             VisualSet.Default,
             new Compound(Element.S * 1, Element.O * 3),
@@ -505,7 +505,7 @@ namespace Sillago
             MaterialFlags.Toxic,
             minTemp: 10f,
             maxTemp: 70f,
-            feedsOn: Materials.Sulphur);
+            feedsOn: Materials.Sulfur);
     
         public static Alloy Bronze = new Alloy(
             "Bronze",

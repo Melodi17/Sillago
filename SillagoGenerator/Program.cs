@@ -52,14 +52,16 @@
         {
             string indentBody = string.Join(Environment.NewLine, body.Split(Environment.NewLine).Select(line => "    " + line));
             return $@"// This file is auto-generated. Do not edit manually.
-namespace Sillago.Materials;
-
+namespace Sillago
+{{
+using Symbols;
 using Types;
 
 [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 public partial class {className}
 {{
 {indentBody}
+}}
 }}
 ";
         }
