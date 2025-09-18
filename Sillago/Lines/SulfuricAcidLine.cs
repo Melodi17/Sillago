@@ -56,12 +56,13 @@ namespace Sillago
                 .SetDuration(TimeSpan.FromSeconds(1))
                 .BuildAndRegister();
             
-            // Oleum 25ml + Water 25ml -> Sulfuric Acid 50ml
+            // Oleum 25ml + Water 25ml -> Sulfuric Acid 50ml + Hydrogen 25ml
             new RecipeBuilder(RecipeType.Reacting)
                 .NamePatterned($"<inputs> <verb>")
                 .AddInput(oleum.Stack(25))
                 .AddInput(water.Stack(25))
                 .AddOutput(sulfuricAcid.Stack(50))
+                .AddOutput(hydrogen.Stack(25))
                 .SetDuration(TimeSpan.FromSeconds(1))
                 .BuildAndRegister();
         }
