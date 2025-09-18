@@ -9,6 +9,8 @@ namespace Sillago
         {
             Materials.GenerateItemsAndRecipes();
             Materials.GenerateLinkingRecipes();
+            
+            SulfuricAcidLine.Generate();
         }
     }
 }

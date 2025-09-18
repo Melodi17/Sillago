@@ -58,6 +58,22 @@
 
                     DisplayRecipeResults(searchTerm, results);
                 }
+                
+                else if (input.StartsWith("tree"))
+                {
+                    string itemId = input[4..].Trim();
+                    if (!Items.Entries.Any(i => i.Id.Equals(itemId, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        AnsiConsole.MarkupLine("[red]Unknown item ID. Type 'help' for a list of commands.[/]");
+                        continue;
+                    }
+
+                    Item item = Items.Get(itemId);
+                    CraftingTree tree = new(item);
+                    string mermaid = tree.RenderMermaid();
+                    AnsiConsole.MarkupLine("[green]Crafting tree in Mermaid format:[/]");
+                    AnsiConsole.WriteLine(mermaid);
+                }
 
                 else if (Items.Entries.Any(i => i.Id.Equals(input, StringComparison.OrdinalIgnoreCase)))
                 {
