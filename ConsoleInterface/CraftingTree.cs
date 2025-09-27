@@ -57,8 +57,8 @@ namespace ConsoleInterface
         {
             if (item is ItemMaterial im)
             {
-                if (im.Type == MaterialType.Ingot && im.Material is not Alloy)
-                    return true;
+                // if (im.Type == MaterialType.Ingot && im.Material is not Alloy)
+                //     return true;
             }
 
             if (!Recipes.Producing(item).Any())

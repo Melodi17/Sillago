@@ -41,6 +41,15 @@ namespace Sillago.Types
                     .AddRequirement(TemperatureRequirement.Above(this.LiquificationPoint.Value))
                     .Build();
             }
+            
+            // powder vaporization 
+            // yield return new RecipeBuilder(RecipeType.PowderVaporization)
+            //     .NamePatterned($"<input> <verb>")
+            //     .AddInput(powder.Stack())
+            //     .AddOutput(Items.GetMaterialForm(this, MaterialType.Gas).Stack(100))
+            //     .SetDuration(TimeSpan.FromSeconds(10))
+            //     .AddRequirement(TemperatureRequirement.Above(10_000))
+            //     .Build();
         }
     }
 }

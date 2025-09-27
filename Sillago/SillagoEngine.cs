@@ -11,6 +11,7 @@ namespace Sillago
             Materials.GenerateLinkingRecipes();
             
             SulfuricAcidLine.Generate();
+            PTFELine.Generate();
         }
     }
 }

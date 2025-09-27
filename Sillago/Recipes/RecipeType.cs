@@ -32,6 +32,8 @@ namespace Sillago
         public static RecipeType Assembling = new("Assembling", "Assembling", "Assembler");
         public static RecipeType Wiremilling = new("Wiremilling", "Wiremilling", "Wiremill");
         public static RecipeType Casting = new("Casting", "Casting", "Liquid Casting Unit");
+        public static RecipeType Polymerization = new("Polymerization", "Polymerizing", "Polymerization Reactor");
+        public static RecipeType Pyrolysis = new("Pyrolysis", "Pyrolyzing", "Pyrolysis Chamber");
     
         public string Noun { get; }
         public string Verb { get; }

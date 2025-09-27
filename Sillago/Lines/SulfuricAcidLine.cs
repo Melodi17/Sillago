@@ -17,6 +17,8 @@ namespace Sillago
             var oxygen = Items.GetMaterialForm(Materials.Oxygen, MaterialType.Gas);
             var hydrogen = Items.GetMaterialForm(Materials.Hydrogen, MaterialType.Gas);
             
+            // Oleum route produces more sulfuric acid, whereas the other route is simpler and produces byproduct of steam.
+            
             // Sulfur x1 + Oxygen 25ml -> Sulfur Dioxide 25ml
             new RecipeBuilder(RecipeType.Reacting)
                 .NamePatterned($"<inputs> <verb>")
@@ -27,10 +29,10 @@ namespace Sillago
                 .BuildAndRegister();
                 
             
-            // Sulfur Dioxide 25ml + Oxygen 25ml -> Sulfur Trioxide 50ml
+            // Sulfur Dioxide 50ml + Oxygen 25ml -> Sulfur Trioxide 50ml
             new RecipeBuilder(RecipeType.Reacting)
                 .NamePatterned($"<inputs> <verb>")
-                .AddInput(sulfurDioxide.Stack(25))
+                .AddInput(sulfurDioxide.Stack(50))
                 .AddInput(oxygen.Stack(25))
                 .AddOutput(sulfurTrioxide.Stack(50))
                 .SetDuration(TimeSpan.FromSeconds(1))
