@@ -577,6 +577,76 @@ public partial class Materials
         freezingPoint: -101.5f,
         vaporisationPoint: -34f);
     
+    public static Material AmmoniumHydroxide = new FluidMaterial(
+        "Ammonium Hydroxide",
+        0x66CCFF,
+        VisualSet.Default,
+        new Compound(Element.N * 1, Element.H * 4, Element.O * 1, Element.H * 1),
+        MaterialFlags.Corrosive | MaterialFlags.Toxic,
+        density: 910f,
+        freezingPoint: -57f,
+        vaporisationPoint: 37f);
+    
+    public static Material HydrogenPeroxide = new FluidMaterial(
+        "Hydrogen Peroxide",
+        0x99FFFF,
+        VisualSet.Default,
+        new Compound(Element.H * 2, Element.O * 2),
+        MaterialFlags.Corrosive,
+        density: 1450f,
+        freezingPoint: -0.43f,
+        vaporisationPoint: 150f);
+    
+    public static Material DnqNovolakPhotoresist = new FluidMaterial(
+        "DNQ-Novolak Photoresist",
+        0xFF66CC,
+        VisualSet.Dull,
+        new Compound(Element.C * 16, Element.H * 14, Element.O * 4),
+        MaterialFlags.None,
+        density: 1200f,
+        freezingPoint: 50f,
+        vaporisationPoint: 200f);
+    
+    public static Material TetramethylammoniumHydroxide = new FluidMaterial(
+        "Tetramethylammonium Hydroxide",
+        0x33CC99,
+        VisualSet.Default,
+        new Compound(new Compound(Element.C * 1, Element.H * 3) * 4, Element.N * 1, Element.O * 1, Element.H * 1),
+        MaterialFlags.Corrosive,
+        density: 1000f,
+        freezingPoint: 0f,
+        vaporisationPoint: 100f);
+    
+    public static Material HydrofluoricAcid = new FluidMaterial(
+        "Hydrofluoric Acid",
+        0xFF3333,
+        VisualSet.Rough,
+        new Compound(Element.H * 1, Element.F * 1),
+        MaterialFlags.Corrosive | MaterialFlags.Toxic,
+        density: 1000f,
+        freezingPoint: -83f,
+        vaporisationPoint: 20f);
+    
+    public static Material PhosphorylChloride = new FluidMaterial(
+        "Phosphoryl Chloride",
+        0xCCCC99,
+        VisualSet.Shiny,
+        new Compound(Element.P * 1, Element.O * 1, Element.Cl * 3),
+        MaterialFlags.Corrosive | MaterialFlags.Toxic,
+        density: 1670f,
+        freezingPoint: 1f,
+        vaporisationPoint: 106f);
+    
+    public static Material Acetone = new FluidMaterial(
+        "Acetone",
+        0xFFCCFF,
+        VisualSet.Shiny,
+        new Compound(Element.C * 3, Element.H * 6, Element.O * 1),
+        MaterialFlags.Flammable,
+        density: 790f,
+        freezingPoint: -95f,
+        vaporisationPoint: 56f);
+    
     public static Material Lactobacillus = new BioMaterial(
          "Lactobacillus",
          1,

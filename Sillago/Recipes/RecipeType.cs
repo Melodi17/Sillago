@@ -35,6 +35,12 @@ namespace Sillago
         public static RecipeType Polymerization = new("Polymerization", "Polymerizing", "Polymerization Reactor");
         public static RecipeType Pyrolysis = new("Pyrolysis", "Pyrolyzing", "Pyrolysis Chamber");
     
+        public static RecipeType ThermalOxidation = new("Thermal Oxidation", "Oxidizing", "Furnace");
+        public static RecipeType SpinCoating = new("Spin Coating", "Coating", "Rotary Bed Coater");
+        public static RecipeType Doping = new("Doping", "Doping", "Diffusion Furnace");
+        public static RecipeType HotplateBaking = new("Hotplate Baking", "Baking", "Hotplate");
+        public static RecipeType Photolithography = new("Photolithography", "Exposing", "Laser Lithography System");
+        
         public string Noun { get; }
         public string Verb { get; }
         public string Machinery { get; }

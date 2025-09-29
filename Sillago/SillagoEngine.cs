@@ -10,6 +10,8 @@ namespace Sillago
             Materials.GenerateItemsAndRecipes();
             Materials.GenerateLinkingRecipes();
             
+            Chips.GenerateItemsAndRecipes();
+            
             SulfuricAcidLine.Generate();
             PTFELine.Generate();
         }
